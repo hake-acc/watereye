@@ -10,9 +10,9 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-md overflow-hidden">
               <img
-                src={`${BASE}/watereye-logo.png`}
+                src={`${BASE}/watereye-brand.png`}
                 alt="WaterEye FX"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
             <span className="text-white font-bold text-sm">

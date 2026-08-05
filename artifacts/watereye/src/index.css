@@ -180,39 +180,80 @@
   .font-serif { font-family: 'Playfair Display', serif; }
 }
 
+/* ── WFX Design System ── */
+
+/* Shared SVG curved rule under section headings */
+.wfx-rule {
+  display: block;
+  width: 110px;
+  height: 9px;
+  margin: 0.35rem auto 0.6rem;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));
+  overflow: visible;
+}
+
+/* Dot-prefixed section labels */
+.wfx-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.wfx-section-label::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  box-shadow: 0 0 7px rgba(168, 85, 247, 0.65);
+  flex-shrink: 0;
+}
+
+/* Card hover — subtle purple glow border */
+.wfx-card-hover {
+  transition: border-color 250ms ease, box-shadow 250ms ease !important;
+}
+
+.wfx-card-hover:hover {
+  border-color: rgba(168, 85, 247, 0.3) !important;
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.08), 0 6px 28px rgba(168, 85, 247, 0.07) !important;
+}
+
 /* Landing page interaction details */
 .hero-stop {
   position: relative;
   display: inline-block;
 }
 
-.hero-stop-underline,
-.click-word-underline {
+/* SVG curved animated underline for hero "stop." */
+.hero-stop-underline {
   position: absolute;
-  left: 0.05em;
-  right: 0.02em;
-  bottom: -0.08em;
-  height: 0.09em;
-  min-height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #a855f7, #ec4899 48%, #f97316);
+  left: -0.04em;
+  right: -0.04em;
+  bottom: -0.28em;
+  height: 0.32em;
+  overflow: visible;
   transform-origin: left center;
   animation: draw-underline 900ms cubic-bezier(.22, 1, .36, 1) 700ms both;
-  box-shadow: 0 0 18px rgb(217 70 239 / 45%);
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
 }
 
-.hero-stop-underline::after,
-.click-word-underline::after {
-  content: '';
+/* Navbar active link curved underline */
+.nav-link-item {
+  position: relative;
+}
+
+.nav-active-underline {
   position: absolute;
-  right: -0.14em;
-  top: 50%;
-  width: 0.22em;
-  height: 0.22em;
-  border-radius: 50%;
-  background: #f97316;
-  transform: translateY(-50%);
-  box-shadow: 0 0 10px rgb(249 115 22 / 70%);
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 5px;
+  filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.75));
+  overflow: visible;
+  pointer-events: none;
 }
 
 .plane-cta {
@@ -278,19 +319,29 @@
   animation: click-pop 360ms cubic-bezier(.2, .9, .3, 1.4);
 }
 
+/* SVG curved underline for the "Click" word */
 .click-word-underline {
-  bottom: -0.01em;
-  height: 0.07em;
-  min-height: 2px;
-  background: #a855f7;
-  animation: none;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  position: absolute;
+  left: -0.04em;
+  right: -0.04em;
+  bottom: -0.1em;
+  height: 0.22em;
+  overflow: visible;
+  transition: filter 200ms ease, transform 200ms ease;
+}
+
+.click-word-path {
+  transition: stroke 200ms ease;
 }
 
 .click-word:hover .click-word-underline,
 .click-word.is-clicked .click-word-underline {
   transform: scaleX(1.08);
-  box-shadow: 0 0 16px rgb(168 85 247 / 80%);
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.9));
+}
+
+.click-word:hover .click-word-path {
+  stroke: #ec4899;
 }
 
 .click-cursor {

@@ -61,11 +61,14 @@ export default function Services() {
     <main className="pt-20 pb-24">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">What I Do</p>
-        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-4">
+        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">What I Do</p>
+        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
           Services&nbsp;<span className="text-zinc-400 font-normal">&amp;</span>&nbsp;Pricing
         </h1>
-        <p className="text-zinc-400 max-w-xl mx-auto">
+        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        </svg>
+        <p className="text-zinc-400 max-w-xl mx-auto mt-2">
           No vague packages, no hidden scopes. Every service listed here is something I've done many times over,
           and the price reflects exactly what you get.
         </p>

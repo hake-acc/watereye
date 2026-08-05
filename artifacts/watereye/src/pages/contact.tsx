@@ -41,11 +41,14 @@ export default function Contact() {
     <main className="pt-20 pb-24">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Let's Talk</p>
-        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-4">
+        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Let's Talk</p>
+        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
           Tell Me About<br />Your Channel
         </h1>
-        <p className="text-zinc-400 max-w-lg mx-auto">
+        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        </svg>
+        <p className="text-zinc-400 max-w-lg mx-auto mt-2">
           No discovery calls just to get a quote. Fill out the brief below, be specific,
           and I'll get back to you within 24 hours with a plan and a price.
         </p>

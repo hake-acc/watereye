@@ -85,9 +85,12 @@ export default function Portfolio() {
     <main className="pt-20 pb-24">
       {/* Header */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Selected Works</p>
-        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-4">The Work</h1>
-        <p className="text-zinc-400 max-w-xl mx-auto">
+        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Selected Works</p>
+        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">The Work</h1>
+        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        </svg>
+        <p className="text-zinc-400 max-w-xl mx-auto mt-2">
           26 thumbnails shown here. Real channels, real audiences, real results.<br />
           Built with Adobe Photoshop, Cinema 4D and Blender.
         </p>

@@ -52,7 +52,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+              className={`nav-link-item px-3 py-2 text-sm rounded-md transition-colors ${
                 location === link.href
                   ? 'text-white font-medium'
                   : 'text-zinc-400 hover:text-white'
@@ -60,6 +60,12 @@ export default function Navbar() {
               data-testid={`link-nav-${link.label.toLowerCase()}`}
             >
               {link.label}
+              {/* Curved SVG underline for active link */}
+              {location === link.href && (
+                <svg className="nav-active-underline" aria-hidden="true" viewBox="0 0 40 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 2 3.5 C 10 1 25 4 38 2.5" stroke="url(#wfx-grad-nav)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                </svg>
+              )}
             </Link>
           ))}
         </nav>

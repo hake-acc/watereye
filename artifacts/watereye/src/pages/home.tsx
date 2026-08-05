@@ -116,7 +116,11 @@ export default function Home() {
             <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
               <span className="hero-stop">
                 stop.
-                <span className="hero-stop-underline" aria-hidden="true" />
+                {/* SVG curved underline — brushstroke arc with gradient + orange dot */}
+                <svg className="hero-stop-underline" aria-hidden="true" viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 3 8 C 45 2 100 10 148 5 C 170 2 185 8 197 5" stroke="url(#wfx-grad-main)" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                  <circle cx="197" cy="5" r="4" fill="#f97316" />
+                </svg>
               </span>
             </em>
           </h1>
@@ -191,9 +195,13 @@ export default function Home() {
       {/* ── TRUSTED BY ── */}
       <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Trusted By</p>
-          <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">Creators I've Worked With</h2>
-          <p className="text-zinc-400 max-w-xl mx-auto">Real channels. Real thumbnails. Real results across gaming, entertainment and more.</p>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Trusted By</p>
+          <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">Creators I've Worked With</h2>
+          {/* Decorative curved rule */}
+          <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </svg>
+          <p className="text-zinc-400 max-w-xl mx-auto mt-2">Real channels. Real thumbnails. Real results across gaming, entertainment and more.</p>
         </div>
 
         {/* Filter tabs */}
@@ -225,10 +233,13 @@ export default function Home() {
       <section className="py-24 px-4 sm:px-6 bg-zinc-950/50 border-y border-zinc-800/40">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">The Process</p>
-            <h2 className="text-white text-3xl sm:text-4xl font-bold">
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">The Process</p>
+            <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">
               Simple.&nbsp;<span className="text-zinc-500">Direct.</span>&nbsp;No Wasted Steps.
             </h2>
+            <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+            </svg>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -238,7 +249,7 @@ export default function Home() {
               { n: '03', title: 'We Refine It Together', desc: 'You see the first draft and give your honest reaction. Direct feedback, fast turnaround, no ticket systems.' },
               { n: '04', title: 'Files Are Yours Forever', desc: 'High-res source file, web exports, every size you need. You own it outright with no licensing surprises.' },
             ].map(step => (
-              <div key={step.n} className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-zinc-700 transition-colors" data-testid={`step-${step.n}`}>
+              <div key={step.n} className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 wfx-card-hover" data-testid={`step-${step.n}`}>
                 <span className="text-zinc-600 text-sm font-mono mb-3 block">{step.n}</span>
                 <h3 className="text-white font-semibold text-lg mb-2">{step.title}</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed">{step.desc}</p>
@@ -260,7 +271,10 @@ export default function Home() {
             aria-label="Click to create an effect"
           >
             Click
-            <span className="click-word-underline" aria-hidden="true" />
+            {/* SVG curved underline — slightly wavy brushstroke */}
+            <svg className="click-word-underline" aria-hidden="true" viewBox="0 0 100 7" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 1 5 C 22 1 50 6 78 3 C 88 1 94 5 99 4" stroke="url(#wfx-grad-nav)" strokeWidth="2.2" strokeLinecap="round" fill="none" className="click-word-path" />
+            </svg>
             <MousePointer2 className="click-cursor" aria-hidden="true" />
             <span className="click-burst" key={clickBurst} aria-hidden="true">
               <Sparkles className="click-spark click-spark-one" />

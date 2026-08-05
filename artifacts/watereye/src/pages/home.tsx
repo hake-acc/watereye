@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { Eye, Send, Play, ChevronDown } from 'lucide-react';
+import { Eye, Send, Play, ChevronDown, MousePointer2, Sparkles, Wind } from 'lucide-react';
 import CreatorCard from '@/components/creator-card';
 import { useState } from 'react';
 
@@ -50,10 +50,19 @@ const FILTERS = ['All', 'Gaming', 'Minecraft', 'Entertainment', 'Shorts'];
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [planeFlying, setPlaneFlying] = useState(false);
+  const [clickBurst, setClickBurst] = useState(0);
 
   const filtered = ALL_CREATORS.filter(c =>
     activeFilter === 'All' || c.category === activeFilter.toLowerCase()
   );
+
+  const launchPlane = () => {
+    setPlaneFlying(false);
+    requestAnimationFrame(() => setPlaneFlying(true));
+  };
+
+  const triggerClickBurst = () => setClickBurst(value => value + 1);
 
   return (
     <main>
@@ -105,7 +114,10 @@ export default function Home() {
             Thumbnails that<br />
             make people{' '}
             <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
-              stop.
+              <span className="hero-stop">
+                stop.
+                <span className="hero-stop-underline" aria-hidden="true" />
+              </span>
             </em>
           </h1>
 
@@ -128,10 +140,15 @@ export default function Home() {
             </Link>
             <Link
               href="/contact"
-              className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors border border-zinc-700"
+              onClick={launchPlane}
+              className={`plane-cta flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors border border-zinc-700 ${planeFlying ? 'is-flying' : ''}`}
               data-testid="button-start-project"
             >
-              <Send className="w-4 h-4" />
+              <span className="plane-icon-wrap" aria-hidden="true">
+                <Send className="w-4 h-4 plane-icon" />
+                <Wind className="plane-breeze plane-breeze-one" />
+                <Wind className="plane-breeze plane-breeze-two" />
+              </span>
               Start a Project
             </Link>
           </div>
@@ -235,7 +252,23 @@ export default function Home() {
       <section className="py-28 px-4 sm:px-6 text-center max-w-3xl mx-auto">
         <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Let's Build Something</p>
         <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
-          Every View Starts<br />With a Click.
+          Every View Starts<br />With a{' '}
+          <button
+            type="button"
+            className={`click-word ${clickBurst ? 'is-clicked' : ''}`}
+            onClick={triggerClickBurst}
+            aria-label="Click to create an effect"
+          >
+            Click
+            <span className="click-word-underline" aria-hidden="true" />
+            <MousePointer2 className="click-cursor" aria-hidden="true" />
+            <span className="click-burst" key={clickBurst} aria-hidden="true">
+              <Sparkles className="click-spark click-spark-one" />
+              <Sparkles className="click-spark click-spark-two" />
+              <span className="click-dot click-dot-one" />
+              <span className="click-dot click-dot-two" />
+            </span>
+          </button>
         </h2>
         <p className="text-zinc-400 mb-10 max-w-md mx-auto">
           Your next video deserves a thumbnail that gets clicked. Let's build it together.

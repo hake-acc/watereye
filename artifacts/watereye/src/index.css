@@ -179,3 +179,238 @@
   }
   .font-serif { font-family: 'Playfair Display', serif; }
 }
+
+/* Landing page interaction details */
+.hero-stop {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-stop-underline,
+.click-word-underline {
+  position: absolute;
+  left: 0.05em;
+  right: 0.02em;
+  bottom: -0.08em;
+  height: 0.09em;
+  min-height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a855f7, #ec4899 48%, #f97316);
+  transform-origin: left center;
+  animation: draw-underline 900ms cubic-bezier(.22, 1, .36, 1) 700ms both;
+  box-shadow: 0 0 18px rgb(217 70 239 / 45%);
+}
+
+.hero-stop-underline::after,
+.click-word-underline::after {
+  content: '';
+  position: absolute;
+  right: -0.14em;
+  top: 50%;
+  width: 0.22em;
+  height: 0.22em;
+  border-radius: 50%;
+  background: #f97316;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px rgb(249 115 22 / 70%);
+}
+
+.plane-cta {
+  position: relative;
+  overflow: visible;
+}
+
+.plane-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.plane-icon {
+  transform: translate(0, 0) rotate(0);
+}
+
+.plane-cta.is-flying .plane-icon {
+  animation: plane-flight 720ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.plane-breeze {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  color: #a1a1aa;
+  transform: translate(-3px, 4px) scale(.5);
+}
+
+.plane-cta.is-flying .plane-breeze-one {
+  animation: breeze-one 620ms ease-out 120ms both;
+}
+
+.plane-cta.is-flying .plane-breeze-two {
+  animation: breeze-two 620ms ease-out 190ms both;
+}
+
+.click-word {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.08em 0.06em;
+  color: #fff;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.click-word:hover {
+  color: #f0abfc;
+}
+
+.click-word:focus-visible {
+  outline: 2px solid #e879f9;
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.click-word.is-clicked {
+  animation: click-pop 360ms cubic-bezier(.2, .9, .3, 1.4);
+}
+
+.click-word-underline {
+  bottom: -0.01em;
+  height: 0.07em;
+  min-height: 2px;
+  background: #a855f7;
+  animation: none;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.click-word:hover .click-word-underline,
+.click-word.is-clicked .click-word-underline {
+  transform: scaleX(1.08);
+  box-shadow: 0 0 16px rgb(168 85 247 / 80%);
+}
+
+.click-cursor {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: -0.5em;
+  width: 0.55em;
+  height: 0.55em;
+  color: #f0abfc;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.click-word.is-clicked .click-cursor {
+  animation: cursor-fall 520ms cubic-bezier(.2, .8, .3, 1) both;
+}
+
+.click-burst {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.click-spark,
+.click-dot {
+  position: absolute;
+  left: -0.25em;
+  top: -0.25em;
+  opacity: 0;
+}
+
+.click-spark {
+  width: 0.5em;
+  height: 0.5em;
+  color: #facc15;
+}
+
+.click-dot {
+  width: 0.22em;
+  height: 0.22em;
+  border-radius: 50%;
+  background: #f472b6;
+}
+
+.click-spark-one { animation: burst-one 520ms ease-out both; }
+.click-spark-two { animation: burst-two 520ms ease-out 20ms both; }
+.click-dot-one { animation: burst-dot-one 500ms ease-out 30ms both; }
+.click-dot-two { animation: burst-dot-two 500ms ease-out 50ms both; }
+
+@keyframes draw-underline {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes plane-flight {
+  0% { transform: translate(0, 0) rotate(0); }
+  35% { transform: translate(5px, -5px) rotate(-10deg); }
+  100% { transform: translate(18px, -7px) rotate(-18deg); opacity: .15; }
+}
+
+@keyframes breeze-one {
+  0% { opacity: 0; transform: translate(0, 2px) scale(.5); }
+  35% { opacity: .8; }
+  100% { opacity: 0; transform: translate(-18px, 7px) scale(1); }
+}
+
+@keyframes breeze-two {
+  0% { opacity: 0; transform: translate(0, 4px) scale(.5); }
+  35% { opacity: .55; }
+  100% { opacity: 0; transform: translate(-13px, 14px) scale(.8); }
+}
+
+@keyframes click-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(.9); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cursor-fall {
+  0% { opacity: 0; transform: translate(-50%, -1em) rotate(-18deg) scale(.7); }
+  25% { opacity: 1; }
+  65% { opacity: 1; transform: translate(-50%, .28em) rotate(8deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, .62em) rotate(18deg) scale(.8); }
+}
+
+@keyframes burst-one {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.3) rotate(-20deg); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-1.1em, -1.1em) scale(1.2) rotate(-55deg); }
+}
+
+@keyframes burst-two {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.3) rotate(20deg); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(.9em, -1em) scale(1.15) rotate(55deg); }
+}
+
+@keyframes burst-dot-one {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-1.4em, .45em) scale(1); }
+}
+
+@keyframes burst-dot-two {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(1.3em, .7em) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stop-underline,
+  .plane-cta.is-flying .plane-icon,
+  .plane-cta.is-flying .plane-breeze,
+  .click-word.is-clicked,
+  .click-word.is-clicked .click-cursor,
+  .click-burst > * {
+    animation: none !important;
+  }
+}

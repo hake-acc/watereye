@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "WaterEye FX"
+description = "Pixel-perfect recreation of the WaterEye FX thumbnail design portfolio website. Dark-themed multi-page site with floating thumbnail cards, portfolio grid, services/pricing page, and contact page. Built for a YouTube thumbnail designer."
+version = "1.0.0"
+id = "artifacts/watereye"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20865
+
+[services.development]
+run = "pnpm --filter @workspace/watereye run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/watereye", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/watereye/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20865"
+BASE_PATH = "/"

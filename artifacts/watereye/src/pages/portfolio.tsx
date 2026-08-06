@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import Reveal from '@/components/reveal';
+import TextReveal from '@/components/text-reveal';
 
 const YOUTUBE_IDS = [
   'mp-Ir9zS2T0', 'UwkJ0mQmdBE', 'EpXfmPUgQNo', 'sz0Cfvjg5E0',
@@ -45,7 +46,6 @@ const SAMPLE_DESCS = [
 ];
 
 type Filter = 'All Work' | 'Live on YouTube' | 'Sample Work';
-
 const FILTERS: Filter[] = ['All Work', 'Live on YouTube', 'Sample Work'];
 
 export default function Portfolio() {
@@ -74,28 +74,36 @@ export default function Portfolio() {
   }));
 
   const allItems = [...youtubeItems, ...sampleItems];
-
   const shown =
-    active === 'Live on YouTube'
-      ? youtubeItems
-      : active === 'Sample Work'
-      ? sampleItems
-      : allItems;
+    active === 'Live on YouTube' ? youtubeItems :
+    active === 'Sample Work'    ? sampleItems  :
+    allItems;
 
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <Reveal className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Selected Works</p>
-        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">The Work</h1>
-        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        </svg>
-        <p className="text-zinc-400 max-w-xl mx-auto mt-2">
-          26 thumbnails shown here. Real channels, real audiences, real results.<br />
-          Built with Adobe Photoshop, Cinema 4D and Blender.
-        </p>
-      </Reveal>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+        <Reveal>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Selected Works</p>
+        </Reveal>
+        <TextReveal
+          as="h1"
+          className="text-white text-4xl sm:text-5xl font-bold mb-2"
+          delay={60}
+          wordDelay={80}
+        >
+          The Work
+        </TextReveal>
+        <Reveal delay={240}>
+          <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </svg>
+          <p className="text-zinc-400 max-w-xl mx-auto mt-2">
+            26 thumbnails shown here. Real channels, real audiences, real results.<br />
+            Built with Adobe Photoshop, Cinema 4D and Blender.
+          </p>
+        </Reveal>
+      </div>
 
       {/* Filters */}
       <Reveal className="max-w-5xl mx-auto px-4 sm:px-6 mb-10 flex flex-wrap gap-2">

@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { Check, Send, Eye } from 'lucide-react';
 import FaqAccordion from '@/components/faq-accordion';
 import Reveal from '@/components/reveal';
+import TextReveal from '@/components/text-reveal';
 
 const SERVICES = [
   { n: '01', title: 'YouTube Thumbnail Design', desc: 'The core service. I study your channel, your niche, and the competition before a single element gets placed. The result is a thumbnail that earns its click because it was designed specifically for your feed.' },
@@ -61,31 +62,43 @@ export default function Services() {
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">What I Do</p>
-        <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
-          Services&nbsp;<span className="text-zinc-400 font-normal">&amp;</span>&nbsp;Pricing
-        </h1>
-        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        </svg>
-        <p className="text-zinc-400 max-w-xl mx-auto mt-2">
-          No vague packages, no hidden scopes. Every service listed here is something I've done many times over,
-          and the price reflects exactly what you get.
-        </p>
-      </Reveal>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+        <Reveal>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">What I Do</p>
+        </Reveal>
+        <TextReveal
+          as="h1"
+          className="text-white text-4xl sm:text-5xl font-bold mb-2"
+          delay={60}
+        >
+          Services and Pricing
+        </TextReveal>
+        <Reveal delay={280}>
+          <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </svg>
+          <p className="text-zinc-400 max-w-xl mx-auto mt-2">
+            No vague packages, no hidden scopes. Every service listed here is something I've done many times over,
+            and the price reflects exactly what you get.
+          </p>
+        </Reveal>
+      </div>
 
       {/* Services list */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
-        <Reveal className="text-center mb-10">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">What's Available</p>
-          <h2 className="text-white text-2xl sm:text-3xl font-bold">
+        <div className="text-center mb-10">
+          <Reveal>
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">What's Available</p>
+          </Reveal>
+          <TextReveal as="h2" className="text-white text-2xl sm:text-3xl font-bold" delay={60}>
             Every Service I Offer
-          </h2>
-          <p className="text-zinc-400 mt-3 max-w-lg mx-auto text-sm">
-            From a single thumbnail to a full channel identity. Built around your niche, your audience, and your upload schedule.
-          </p>
-        </Reveal>
+          </TextReveal>
+          <Reveal delay={280}>
+            <p className="text-zinc-400 mt-3 max-w-lg mx-auto text-sm">
+              From a single thumbnail to a full channel identity. Built around your niche, your audience, and your upload schedule.
+            </p>
+          </Reveal>
+        </div>
         <div className="space-y-3">
           {SERVICES.map((s, i) => (
             <Reveal key={s.n} delay={i * 50}>
@@ -106,16 +119,20 @@ export default function Services() {
       {/* Pricing */}
       <section className="bg-zinc-950/50 border-y border-zinc-800/40 py-24 px-4 sm:px-6 mb-24">
         <div className="max-w-5xl mx-auto">
-          <Reveal className="text-center mb-12">
-            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Pricing Plans</p>
-            <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
-              Pick a Plan.&nbsp;<span className="text-zinc-400">Or Build Your Own.</span>
-            </h2>
-            <p className="text-zinc-400 max-w-xl mx-auto">
-              These three tiers cover most of what creators need. For agencies, bulk orders, or custom scopes,
-              reach out and I'll put together a quote that actually fits.
-            </p>
-          </Reveal>
+          <div className="text-center mb-12">
+            <Reveal>
+              <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Pricing Plans</p>
+            </Reveal>
+            <TextReveal as="h2" className="text-white text-3xl sm:text-4xl font-bold mb-4" delay={60}>
+              Pick a Plan. Or Build Your Own.
+            </TextReveal>
+            <Reveal delay={340}>
+              <p className="text-zinc-400 max-w-xl mx-auto">
+                These three tiers cover most of what creators need. For agencies, bulk orders, or custom scopes,
+                reach out and I'll put together a quote that actually fits.
+              </p>
+            </Reveal>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {PLANS.map((plan, i) => (
               <Reveal key={plan.name} delay={i * 80}>
@@ -133,9 +150,7 @@ export default function Services() {
                   )}
                   <div className="mb-5">
                     <p className="text-zinc-400 text-sm mb-2">{plan.name}</p>
-                    <div className="flex items-end gap-1">
-                      <span className="text-white text-4xl font-bold">{plan.price}</span>
-                    </div>
+                    <span className="text-white text-4xl font-bold">{plan.price}</span>
                     <p className="text-zinc-500 text-xs mt-1">{plan.unit}</p>
                   </div>
                   <ul className="space-y-2.5 mb-8 flex-1">
@@ -174,12 +189,14 @@ export default function Services() {
 
       {/* Commitment */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
-        <Reveal className="text-center mb-12">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">My Commitment</p>
-          <h2 className="text-white text-3xl sm:text-4xl font-bold">
-            What Every Client Gets.&nbsp;<span className="text-zinc-400">No Exceptions.</span>
-          </h2>
-        </Reveal>
+        <div className="text-center mb-12">
+          <Reveal>
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">My Commitment</p>
+          </Reveal>
+          <TextReveal as="h2" className="text-white text-3xl sm:text-4xl font-bold" delay={60}>
+            What Every Client Gets. No Exceptions.
+          </TextReveal>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {COMMITMENTS.map((c, i) => (
             <Reveal key={c.n} delay={i * 70}>
@@ -195,35 +212,45 @@ export default function Services() {
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 mb-24">
-        <Reveal className="text-center mb-10">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
-          <h2 className="text-white text-3xl font-bold">Frequently Asked Questions</h2>
-          <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
-        </Reveal>
-        <Reveal delay={100}>
+        <div className="text-center mb-10">
+          <Reveal>
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
+          </Reveal>
+          <TextReveal as="h2" className="text-white text-3xl font-bold" delay={60}>
+            Frequently Asked Questions
+          </TextReveal>
+          <Reveal delay={280}>
+            <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
+          </Reveal>
+        </div>
+        <Reveal delay={80}>
           <FaqAccordion items={FAQ_ITEMS} />
         </Reveal>
       </section>
 
       {/* CTA */}
-      <Reveal className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Ready When You Are</p>
-        <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
-          Your Next Thumbnail<br />Doesn't Have to Guess.
-        </h2>
-        <p className="text-zinc-400 mb-10 max-w-md mx-auto">
-          Choose a service, send a brief, and I'll take it from there.
-          First response guaranteed within 24 hours.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors">
-            <Send className="w-4 h-4" /> Start a Project
-          </Link>
-          <Link href="/portfolio" className="flex items-center gap-2 border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium">
-            <Eye className="w-4 h-4" /> See the Work
-          </Link>
-        </div>
-      </Reveal>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <Reveal>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Ready When You Are</p>
+        </Reveal>
+        <TextReveal as="h2" className="text-white text-3xl sm:text-4xl font-bold mb-4" delay={60}>
+          Your Next Thumbnail Doesn't Have to Guess.
+        </TextReveal>
+        <Reveal delay={300}>
+          <p className="text-zinc-400 mb-10 max-w-md mx-auto">
+            Choose a service, send a brief, and I'll take it from there.
+            First response guaranteed within 24 hours.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors">
+              <Send className="w-4 h-4" /> Start a Project
+            </Link>
+            <Link href="/portfolio" className="flex items-center gap-2 border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium">
+              <Eye className="w-4 h-4" /> See the Work
+            </Link>
+          </div>
+        </Reveal>
+      </div>
     </main>
   );
 }

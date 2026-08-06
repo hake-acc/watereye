@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mail, MessageSquare, ExternalLink, Clock, CheckCircle } from 'lucide-react';
 import FaqAccordion from '@/components/faq-accordion';
 import Reveal from '@/components/reveal';
+import TextReveal from '@/components/text-reveal';
 
 const FAQ_ITEMS = [
   { question: 'How long does a thumbnail actually take?', answer: 'Most single thumbnails ship within 24 to 48 hours from receiving your brief. Bulk packs and channel branding take 3 to 5 business days. If you need something same-day, just ask. Rush delivery is usually available for a small extra fee.' },
@@ -26,6 +27,24 @@ const CONTACT_METHODS = [
   { icon: <ExternalLink className="w-4 h-4" />, label: 'YT Jobs', value: 'WaterEyeFX Profile', sub: 'Hire me directly on YT Jobs', href: 'https://ytjobs.co/talent/profile/597018' },
 ];
 
+// Masked line-reveal style (same technique as the hero)
+function lineClip(visible: boolean, delayMs: number) {
+  return {
+    outer: {
+      display: 'block',
+      overflow: 'hidden',
+      paddingBottom: '0.1em',
+      marginBottom: '-0.1em',
+    } as React.CSSProperties,
+    inner: {
+      display: 'block',
+      transform: visible ? 'translateY(0)' : 'translateY(108%)',
+      transition: `transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms`,
+      willChange: 'transform',
+    } as React.CSSProperties,
+  };
+}
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -33,6 +52,13 @@ export default function Contact() {
     name: '', email: '', channel: '', service: '', budget: '',
     deadline: '', brief: '', source: '',
   });
+
+  // H1 has two lines with a <br />, so we animate them with the same masked technique as the hero
+  const [headerVisible, setHeaderVisible] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHeaderVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,22 +70,33 @@ export default function Contact() {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   }
 
+  const l1 = lineClip(headerVisible, 0);
+  const l2 = lineClip(headerVisible, 80);
+
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Let's Talk</p>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+        <Reveal>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Let's Talk</p>
+        </Reveal>
+
+        {/* Two-line masked h1 */}
         <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
-          Tell Me About<br />Your Channel
+          <span style={l1.outer}><span style={l1.inner}>Tell Me About</span></span>
+          <span style={l2.outer}><span style={l2.inner}>Your Channel</span></span>
         </h1>
-        <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        </svg>
-        <p className="text-zinc-400 max-w-lg mx-auto mt-2">
-          No discovery calls just to get a quote. Fill out the brief below, be specific,
-          and I'll get back to you within 24 hours with a plan and a price.
-        </p>
-      </Reveal>
+
+        <Reveal delay={240}>
+          <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </svg>
+          <p className="text-zinc-400 max-w-lg mx-auto mt-2">
+            No discovery calls just to get a quote. Fill out the brief below, be specific,
+            and I'll get back to you within 24 hours with a plan and a price.
+          </p>
+        </Reveal>
+      </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form */}
@@ -232,12 +269,18 @@ export default function Contact() {
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-24">
-        <Reveal className="text-center mb-10">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
-          <h2 className="text-white text-3xl font-bold">Frequently Asked Questions</h2>
-          <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
-        </Reveal>
-        <Reveal delay={100}>
+        <div className="text-center mb-10">
+          <Reveal>
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
+          </Reveal>
+          <TextReveal as="h2" className="text-white text-3xl font-bold" delay={60}>
+            Frequently Asked Questions
+          </TextReveal>
+          <Reveal delay={260}>
+            <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
+          </Reveal>
+        </div>
+        <Reveal delay={80}>
           <FaqAccordion items={FAQ_ITEMS} />
         </Reveal>
       </section>

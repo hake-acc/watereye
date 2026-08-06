@@ -2,7 +2,8 @@ import { Link } from 'wouter';
 import { Eye, Send, Play, ChevronDown, MousePointer2, Sparkles, Wind, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import CreatorCard from '@/components/creator-card';
 import Reveal from '@/components/reveal';
-import { useState, useEffect, useCallback } from 'react';
+import TextReveal from '@/components/text-reveal';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
 const FLOATING_CARDS = [
@@ -47,6 +48,24 @@ const ALL_CREATORS = [
 ];
 
 const FILTERS = ['All', 'Gaming', 'Minecraft', 'Entertainment', 'Shorts'];
+
+// Shared style for the Apple masked-line reveal
+function lineClip(visible: boolean, delayMs: number) {
+  return {
+    outer: {
+      display: 'block',
+      overflow: 'hidden',
+      paddingBottom: '0.1em',
+      marginBottom: '-0.1em',
+    } as React.CSSProperties,
+    inner: {
+      display: 'block',
+      transform: visible ? 'translateY(0)' : 'translateY(106%)',
+      transition: `transform 0.82s cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms`,
+      willChange: 'transform',
+    } as React.CSSProperties,
+  };
+}
 
 function ReelCarousel({ onClose }: { onClose: () => void }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -141,6 +160,13 @@ export default function Home() {
   const [clickBurst, setClickBurst] = useState(0);
   const [reelOpen, setReelOpen] = useState(false);
 
+  // Hero text visible immediately on mount — always above the fold
+  const [heroVisible, setHeroVisible] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHeroVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
+
   const filtered = ALL_CREATORS.filter(c =>
     activeFilter === 'All' || c.category === activeFilter.toLowerCase()
   );
@@ -150,7 +176,10 @@ export default function Home() {
     requestAnimationFrame(() => setPlaneFlying(true));
   };
 
-  const triggerClickBurst = () => setClickBurst(value => value + 1);
+  const triggerClickBurst = () => setClickBurst(v => v + 1);
+
+  const l1 = lineClip(heroVisible, 0);
+  const l2 = lineClip(heroVisible, 90);
 
   return (
     <main>
@@ -190,6 +219,7 @@ export default function Home() {
 
         {/* Center content */}
         <div className="relative z-10 flex flex-col items-center text-center max-w-2xl px-4 pt-14">
+
           {/* Badge */}
           <Reveal delay={0}>
             <div className="flex items-center gap-2 bg-zinc-900/90 border border-zinc-700/60 rounded-full px-4 py-1.5 mb-8">
@@ -198,25 +228,34 @@ export default function Home() {
             </div>
           </Reveal>
 
-          {/* Headline */}
-          <Reveal delay={100}>
-            <h1 className="font-bold leading-[1.05] mb-6 text-white" style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}>
-              Thumbnails that<br />
-              make people{' '}
-              <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
-                <span className="hero-stop">
-                  stop.
-                  <svg className="hero-stop-underline" aria-hidden="true" viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 3 8 C 40 2 90 10 130 5 C 148 2 158 7 166 5" stroke="url(#wfx-grad-main)" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-                    <circle cx="166" cy="5" r="4" fill="#f97316" />
-                  </svg>
-                </span>
-              </em>
-            </h1>
-          </Reveal>
+          {/* Headline — Apple masked line-by-line reveal */}
+          <h1
+            className="font-bold leading-[1.1] mb-6 text-white"
+            style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}
+          >
+            {/* Line 1 */}
+            <span style={l1.outer}>
+              <span style={l1.inner}>Thumbnails that</span>
+            </span>
+            {/* Line 2 */}
+            <span style={{ ...l2.outer, paddingBottom: '0.28em', marginBottom: '-0.28em' }}>
+              <span style={l2.inner}>
+                make people{' '}
+                <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="hero-stop">
+                    stop.
+                    <svg className="hero-stop-underline" aria-hidden="true" viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M 3 8 C 40 2 90 10 130 5 C 148 2 158 7 166 5" stroke="url(#wfx-grad-main)" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                      <circle cx="166" cy="5" r="4" fill="#f97316" />
+                    </svg>
+                  </span>
+                </em>
+              </span>
+            </span>
+          </h1>
 
           {/* Subtitle */}
-          <Reveal delay={200}>
+          <Reveal delay={220}>
             <p className="text-zinc-400 text-base sm:text-lg max-w-lg mb-8 leading-relaxed">
               Built in <strong className="text-zinc-200">Photoshop</strong>,{' '}
               <strong className="text-zinc-200">Cinema 4D</strong> and{' '}
@@ -225,7 +264,7 @@ export default function Home() {
           </Reveal>
 
           {/* CTA buttons */}
-          <Reveal delay={300}>
+          <Reveal delay={320}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <Link
                 href="/portfolio"
@@ -249,8 +288,8 @@ export default function Home() {
             </div>
           </Reveal>
 
-          {/* Reel carousel trigger */}
-          <Reveal delay={380}>
+          {/* Reel trigger */}
+          <Reveal delay={400}>
             <button
               onClick={() => setReelOpen(true)}
               className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm transition-colors"
@@ -264,7 +303,7 @@ export default function Home() {
         </div>
 
         {/* Stats bar */}
-        <Reveal className="absolute bottom-0 left-1/2 -translate-x-1/2 mb-8 z-10 hidden sm:flex" delay={460}>
+        <Reveal className="absolute bottom-0 left-1/2 -translate-x-1/2 mb-8 z-10 hidden sm:flex" delay={480}>
           <div className="bg-zinc-900/95 border border-zinc-800 rounded-2xl px-8 py-5 flex items-center gap-10">
             {[
               { value: '20+', label: 'Creators Served' },
@@ -291,14 +330,24 @@ export default function Home() {
 
       {/* ── TRUSTED BY ── */}
       <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-        <Reveal className="text-center mb-12">
-          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Trusted By</p>
-          <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">Creators I've Worked With</h2>
-          <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-          </svg>
-          <p className="text-zinc-400 max-w-xl mx-auto mt-2">Real channels. Real thumbnails. Real results across gaming, entertainment and more.</p>
-        </Reveal>
+        <div className="text-center mb-12">
+          <Reveal>
+            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Trusted By</p>
+          </Reveal>
+          <TextReveal
+            as="h2"
+            className="text-white text-3xl sm:text-4xl font-bold mb-2"
+            delay={60}
+          >
+            Creators I've Worked With
+          </TextReveal>
+          <Reveal delay={300}>
+            <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+            </svg>
+            <p className="text-zinc-400 max-w-xl mx-auto mt-2">Real channels. Real thumbnails. Real results across gaming, entertainment and more.</p>
+          </Reveal>
+        </div>
 
         {/* Filter tabs */}
         <Reveal className="flex flex-wrap justify-center gap-2 mb-10">
@@ -329,15 +378,23 @@ export default function Home() {
       {/* ── PROCESS ── */}
       <section className="py-24 px-4 sm:px-6 bg-zinc-950/50 border-y border-zinc-800/40">
         <div className="max-w-5xl mx-auto">
-          <Reveal className="text-center mb-16">
-            <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">The Process</p>
-            <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">
-              Simple.&nbsp;<span className="text-zinc-500">Direct.</span>&nbsp;No Wasted Steps.
-            </h2>
-            <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-            </svg>
-          </Reveal>
+          <div className="text-center mb-16">
+            <Reveal>
+              <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">The Process</p>
+            </Reveal>
+            <TextReveal
+              as="h2"
+              className="text-white text-3xl sm:text-4xl font-bold mb-2"
+              delay={60}
+            >
+              Simple. Direct. No Wasted Steps.
+            </TextReveal>
+            <Reveal delay={320}>
+              <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+              </svg>
+            </Reveal>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[

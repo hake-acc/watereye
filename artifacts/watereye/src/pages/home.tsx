@@ -1,17 +1,24 @@
 import { Link } from 'wouter';
-import { Eye, Send, Play, ChevronDown, MousePointer2, Sparkles, Wind } from 'lucide-react';
+import { Eye, Send, Play, ChevronDown, MousePointer2, Sparkles, Wind, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import CreatorCard from '@/components/creator-card';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const FLOATING_CARDS = [
   { top: '8%',  left: '1%',   rotate: -12, w: 155, h: 98  },
+  { top: '13%', left: '16%',  rotate: 8,   w: 140, h: 88  },
   { top: '4%',  right: '4%',  rotate: 6,   w: 165, h: 103 },
+  { top: '19%', right: '11%', rotate: -10, w: 148, h: 92  },
   { top: '36%', right: '1%',  rotate: 4,   w: 155, h: 97  },
   { top: '58%', right: '4%',  rotate: -8,  w: 162, h: 101 },
+  { top: '73%', right: '17%', rotate: 12,  w: 145, h: 91  },
+  { top: '76%', left: '1%',   rotate: 10,  w: 158, h: 99  },
   { top: '57%', left: '4%',   rotate: -6,  w: 150, h: 94  },
+  { top: '38%', left: '16%',  rotate: 14,  w: 143, h: 90  },
   { top: '26%', left: '4%',   rotate: -4,  w: 160, h: 100 },
+  { top: '86%', left: '20%',  rotate: -15, w: 138, h: 87  },
 ];
 
 const THUMBNAIL_IMAGES = [
@@ -42,10 +49,109 @@ const ALL_CREATORS = [
 
 const FILTERS = ['All', 'Gaming', 'Minecraft', 'Entertainment', 'Shorts'];
 
+function ReelCarousel({ onClose }: { onClose: () => void }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [current, setCurrent] = useState(0);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setCurrent(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    return () => { emblaApi.off('select', onSelect); };
+  }, [emblaApi]);
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      onClick={onClose}
+      data-testid="reel-carousel-overlay"
+    >
+      <div
+        className="relative w-full max-w-4xl mx-4"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 text-zinc-400 hover:text-white transition-colors"
+          data-testid="button-reel-close"
+          aria-label="Close reel"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        {/* Label */}
+        <p className="text-center text-zinc-400 text-sm mb-4">
+          {current + 1} / {THUMBNAIL_IMAGES.length} — Recent thumbnails
+        </p>
+
+        {/* Embla viewport */}
+        <div className="overflow-hidden rounded-xl" ref={emblaRef}>
+          <div className="flex">
+            {THUMBNAIL_IMAGES.map((src, i) => (
+              <div key={i} className="flex-none w-full" data-testid={`reel-slide-${i}`}>
+                <img
+                  src={src}
+                  alt={`Thumbnail ${i + 1}`}
+                  className="w-full aspect-video object-cover rounded-xl"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Prev / Next */}
+        <div className="flex items-center justify-between mt-4">
+          <button
+            onClick={scrollPrev}
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
+            data-testid="button-reel-prev"
+          >
+            <ChevronLeft className="w-5 h-5" /> Prev
+          </button>
+
+          {/* Dot indicators */}
+          <div className="flex gap-1.5">
+            {THUMBNAIL_IMAGES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${i === current ? 'bg-white' : 'bg-zinc-600 hover:bg-zinc-400'}`}
+                data-testid={`reel-dot-${i}`}
+                aria-label={`Go to thumbnail ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={scrollNext}
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
+            data-testid="button-reel-next"
+          >
+            Next <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [planeFlying, setPlaneFlying] = useState(false);
   const [clickBurst, setClickBurst] = useState(0);
+  const [reelOpen, setReelOpen] = useState(false);
 
   const filtered = ALL_CREATORS.filter(c =>
     activeFilter === 'All' || c.category === activeFilter.toLowerCase()
@@ -151,8 +257,12 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Video link */}
-          <button className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm transition-colors" data-testid="button-watch-reel">
+          {/* Reel carousel trigger */}
+          <button
+            onClick={() => setReelOpen(true)}
+            className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm transition-colors"
+            data-testid="button-watch-reel"
+          >
             <div className="w-6 h-6 rounded-full border border-zinc-600 flex items-center justify-center">
               <Play className="w-3 h-3 fill-current" />
             </div>
@@ -290,6 +400,9 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Reel carousel modal */}
+      {reelOpen && <ReelCarousel onClose={() => setReelOpen(false)} />}
     </main>
   );
 }

@@ -6,19 +6,28 @@ import TextReveal from '@/components/text-reveal';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
-const FLOATING_CARDS = [
-  { top: '8%',  left: '1%',   rotate: -12, w: 155, h: 98  },
+// Shown on ALL screen sizes (mobile + desktop) — far edges only so they don't cover text on narrow screens
+const MOBILE_CARDS = [
+  { top: '8%',  left: '1%',   rotate: -12, w: 148, h: 93  },
+  { top: '4%',  right: '3%',  rotate: 6,   w: 158, h: 99  },
+  { top: '26%', left: '2%',   rotate: -4,  w: 145, h: 91  },
+  { top: '36%', right: '1%',  rotate: 4,   w: 152, h: 95  },
+  { top: '57%', left: '2%',   rotate: -6,  w: 148, h: 93  },
+  { top: '58%', right: '3%',  rotate: -8,  w: 158, h: 99  },
+  { top: '76%', left: '1%',   rotate: 10,  w: 152, h: 95  },
+  { top: '78%', right: '2%',  rotate: 7,   w: 145, h: 91  },
+];
+
+// Desktop-only cards — inner positions, hidden on mobile
+const DESKTOP_CARDS = [
   { top: '13%', left: '16%',  rotate: 8,   w: 140, h: 88  },
-  { top: '4%',  right: '4%',  rotate: 6,   w: 165, h: 103 },
   { top: '19%', right: '11%', rotate: -10, w: 148, h: 92  },
-  { top: '36%', right: '1%',  rotate: 4,   w: 155, h: 97  },
-  { top: '58%', right: '4%',  rotate: -8,  w: 162, h: 101 },
-  { top: '73%', right: '17%', rotate: 12,  w: 145, h: 91  },
-  { top: '76%', left: '1%',   rotate: 10,  w: 158, h: 99  },
-  { top: '57%', left: '4%',   rotate: -6,  w: 150, h: 94  },
   { top: '38%', left: '16%',  rotate: 14,  w: 143, h: 90  },
-  { top: '26%', left: '4%',   rotate: -4,  w: 160, h: 100 },
+  { top: '73%', right: '17%', rotate: 12,  w: 145, h: 91  },
   { top: '86%', left: '20%',  rotate: -15, w: 138, h: 87  },
+  { top: '90%', right: '20%', rotate: 9,   w: 145, h: 91  },
+  { top: '48%', left: '14%',  rotate: -9,  w: 142, h: 89  },
+  { top: '50%', right: '13%', rotate: 5,   w: 148, h: 93  },
 ];
 
 const THUMBNAIL_IMAGES = [
@@ -185,15 +194,15 @@ export default function Home() {
     <main>
       {/* ── HERO ── */}
       <section className="relative h-screen overflow-hidden bg-[#0d0d0d] flex flex-col items-center justify-center pb-28">
-        {/* Floating thumbnail cards */}
-        {FLOATING_CARDS.map((card, i) => (
+        {/* Floating thumbnail cards — mobile: 8, desktop: 16 */}
+        {MOBILE_CARDS.map((card, i) => (
           <div
-            key={i}
+            key={`m${i}`}
             className="absolute rounded-xl overflow-hidden border border-white/10 shadow-2xl"
             style={{
               top: card.top,
-              left: 'left' in card ? (card as { left: string }).left : undefined,
-              right: 'right' in card ? (card as { right: string }).right : undefined,
+              left: 'left' in card ? (card as any).left : undefined,
+              right: 'right' in card ? (card as any).right : undefined,
               width: card.w,
               height: card.h,
               transform: `rotate(${card.rotate}deg)`,
@@ -202,6 +211,36 @@ export default function Home() {
           >
             <img
               src={THUMBNAIL_IMAGES[i % THUMBNAIL_IMAGES.length]}
+              alt="Thumbnail sample"
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={e => {
+                const el = e.currentTarget as HTMLImageElement;
+                el.style.display = 'none';
+                if (el.parentElement) {
+                  el.parentElement.style.background = '#1c1c1c';
+                  el.parentElement.innerHTML = '<span style="display:flex;align-items:center;justify-content:center;height:100%;color:#555;font-size:11px;font-family:Inter,sans-serif;">Thumbnail</span>';
+                }
+              }}
+            />
+          </div>
+        ))}
+        {DESKTOP_CARDS.map((card, i) => (
+          <div
+            key={`d${i}`}
+            className="hidden md:block absolute rounded-xl overflow-hidden border border-white/10 shadow-2xl"
+            style={{
+              top: card.top,
+              left: 'left' in card ? (card as any).left : undefined,
+              right: 'right' in card ? (card as any).right : undefined,
+              width: card.w,
+              height: card.h,
+              transform: `rotate(${card.rotate}deg)`,
+              zIndex: 1,
+            }}
+          >
+            <img
+              src={THUMBNAIL_IMAGES[(MOBILE_CARDS.length + i) % THUMBNAIL_IMAGES.length]}
               alt="Thumbnail sample"
               className="w-full h-full object-cover"
               loading="lazy"

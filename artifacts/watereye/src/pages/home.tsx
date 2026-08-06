@@ -1,10 +1,9 @@
 import { Link } from 'wouter';
 import { Eye, Send, Play, ChevronDown, MousePointer2, Sparkles, Wind, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import CreatorCard from '@/components/creator-card';
+import Reveal from '@/components/reveal';
 import { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const FLOATING_CARDS = [
   { top: '8%',  left: '1%',   rotate: -12, w: 155, h: 98  },
@@ -63,7 +62,6 @@ function ReelCarousel({ onClose }: { onClose: () => void }) {
     return () => { emblaApi.off('select', onSelect); };
   }, [emblaApi]);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handler);
@@ -74,32 +72,27 @@ function ReelCarousel({ onClose }: { onClose: () => void }) {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
       onClick={onClose}
-      data-testid="reel-carousel-overlay"
     >
       <div
         className="relative w-full max-w-4xl mx-4"
         onClick={e => e.stopPropagation()}
       >
-        {/* Close */}
         <button
           onClick={onClose}
           className="absolute -top-12 right-0 text-zinc-400 hover:text-white transition-colors"
-          data-testid="button-reel-close"
           aria-label="Close reel"
         >
           <X className="w-6 h-6" />
         </button>
 
-        {/* Label */}
         <p className="text-center text-zinc-400 text-sm mb-4">
           {current + 1} / {THUMBNAIL_IMAGES.length} — Recent thumbnails
         </p>
 
-        {/* Embla viewport */}
         <div className="overflow-hidden rounded-xl" ref={emblaRef}>
           <div className="flex">
             {THUMBNAIL_IMAGES.map((src, i) => (
-              <div key={i} className="flex-none w-full" data-testid={`reel-slide-${i}`}>
+              <div key={i} className="flex-none w-full">
                 <img
                   src={src}
                   alt={`Thumbnail ${i + 1}`}
@@ -111,24 +104,20 @@ function ReelCarousel({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        {/* Prev / Next */}
         <div className="flex items-center justify-between mt-4">
           <button
             onClick={scrollPrev}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
-            data-testid="button-reel-prev"
           >
             <ChevronLeft className="w-5 h-5" /> Prev
           </button>
 
-          {/* Dot indicators */}
           <div className="flex gap-1.5">
             {THUMBNAIL_IMAGES.map((_, i) => (
               <button
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
                 className={`w-1.5 h-1.5 rounded-full transition-colors ${i === current ? 'bg-white' : 'bg-zinc-600 hover:bg-zinc-400'}`}
-                data-testid={`reel-dot-${i}`}
                 aria-label={`Go to thumbnail ${i + 1}`}
               />
             ))}
@@ -137,7 +126,6 @@ function ReelCarousel({ onClose }: { onClose: () => void }) {
           <button
             onClick={scrollNext}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
-            data-testid="button-reel-next"
           >
             Next <ChevronRight className="w-5 h-5" />
           </button>
@@ -182,7 +170,6 @@ export default function Home() {
               transform: `rotate(${card.rotate}deg)`,
               zIndex: 1,
             }}
-            data-testid={`card-thumbnail-float-${i}`}
           >
             <img
               src={THUMBNAIL_IMAGES[i % THUMBNAIL_IMAGES.length]}
@@ -204,74 +191,80 @@ export default function Home() {
         {/* Center content */}
         <div className="relative z-10 flex flex-col items-center text-center max-w-2xl px-4 pt-14">
           {/* Badge */}
-          <div className="flex items-center gap-2 bg-zinc-900/90 border border-zinc-700/60 rounded-full px-4 py-1.5 mb-8" data-testid="badge-accepting">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-zinc-300">Currently accepting new clients</span>
-          </div>
+          <Reveal delay={0}>
+            <div className="flex items-center gap-2 bg-zinc-900/90 border border-zinc-700/60 rounded-full px-4 py-1.5 mb-8">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-sm text-zinc-300">Currently accepting new clients</span>
+            </div>
+          </Reveal>
 
           {/* Headline */}
-          <h1 className="font-bold leading-[1.05] mb-6 text-white" style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}>
-            Thumbnails that<br />
-            make people{' '}
-            <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="hero-stop">
-                stop.
-                {/* SVG curved underline — brushstroke arc with gradient + orange dot */}
-                <svg className="hero-stop-underline" aria-hidden="true" viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M 3 8 C 40 2 90 10 130 5 C 148 2 158 7 166 5" stroke="url(#wfx-grad-main)" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-                  <circle cx="166" cy="5" r="4" fill="#f97316" />
-                </svg>
-              </span>
-            </em>
-          </h1>
+          <Reveal delay={100}>
+            <h1 className="font-bold leading-[1.05] mb-6 text-white" style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}>
+              Thumbnails that<br />
+              make people{' '}
+              <em className="font-serif not-italic italic font-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <span className="hero-stop">
+                  stop.
+                  <svg className="hero-stop-underline" aria-hidden="true" viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 3 8 C 40 2 90 10 130 5 C 148 2 158 7 166 5" stroke="url(#wfx-grad-main)" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                    <circle cx="166" cy="5" r="4" fill="#f97316" />
+                  </svg>
+                </span>
+              </em>
+            </h1>
+          </Reveal>
 
           {/* Subtitle */}
-          <p className="text-zinc-400 text-base sm:text-lg max-w-lg mb-8 leading-relaxed">
-            Built in <strong className="text-zinc-200">Photoshop</strong>,{' '}
-            <strong className="text-zinc-200">Cinema 4D</strong> and{' '}
-            <strong className="text-zinc-200">Blender</strong>. Trusted by 20+ creators across gaming, business &amp; education. Delivered in 24h.
-          </p>
+          <Reveal delay={200}>
+            <p className="text-zinc-400 text-base sm:text-lg max-w-lg mb-8 leading-relaxed">
+              Built in <strong className="text-zinc-200">Photoshop</strong>,{' '}
+              <strong className="text-zinc-200">Cinema 4D</strong> and{' '}
+              <strong className="text-zinc-200">Blender</strong>. Trusted by 20+ creators across gaming, business &amp; education. Delivered in 24h.
+            </p>
+          </Reveal>
 
           {/* CTA buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <Link
-              href="/portfolio"
-              className="flex items-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors"
-              data-testid="button-see-work"
-            >
-              <Eye className="w-4 h-4" />
-              See My Work
-            </Link>
-            <Link
-              href="/contact"
-              onClick={launchPlane}
-              className={`plane-cta flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors border border-zinc-700 ${planeFlying ? 'is-flying' : ''}`}
-              data-testid="button-start-project"
-            >
-              <span className="plane-icon-wrap" aria-hidden="true">
-                <Send className="w-4 h-4 plane-icon" />
-                <Wind className="plane-breeze plane-breeze-one" />
-                <Wind className="plane-breeze plane-breeze-two" />
-              </span>
-              Start a Project
-            </Link>
-          </div>
+          <Reveal delay={300}>
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+              <Link
+                href="/portfolio"
+                className="flex items-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors"
+              >
+                <Eye className="w-4 h-4" />
+                See My Work
+              </Link>
+              <Link
+                href="/contact"
+                onClick={launchPlane}
+                className={`plane-cta flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full px-6 py-3 text-sm font-medium transition-colors border border-zinc-700 ${planeFlying ? 'is-flying' : ''}`}
+              >
+                <span className="plane-icon-wrap" aria-hidden="true">
+                  <Send className="w-4 h-4 plane-icon" />
+                  <Wind className="plane-breeze plane-breeze-one" />
+                  <Wind className="plane-breeze plane-breeze-two" />
+                </span>
+                Start a Project
+              </Link>
+            </div>
+          </Reveal>
 
           {/* Reel carousel trigger */}
-          <button
-            onClick={() => setReelOpen(true)}
-            className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm transition-colors"
-            data-testid="button-watch-reel"
-          >
-            <div className="w-6 h-6 rounded-full border border-zinc-600 flex items-center justify-center">
-              <Play className="w-3 h-3 fill-current" />
-            </div>
-            Watch a 60s reel of recent thumbnails
-          </button>
+          <Reveal delay={380}>
+            <button
+              onClick={() => setReelOpen(true)}
+              className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm transition-colors"
+            >
+              <div className="w-6 h-6 rounded-full border border-zinc-600 flex items-center justify-center">
+                <Play className="w-3 h-3 fill-current" />
+              </div>
+              Watch a 60s reel of recent thumbnails
+            </button>
+          </Reveal>
         </div>
 
         {/* Stats bar */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 mb-8 z-10 hidden sm:flex">
+        <Reveal className="absolute bottom-0 left-1/2 -translate-x-1/2 mb-8 z-10 hidden sm:flex" delay={460}>
           <div className="bg-zinc-900/95 border border-zinc-800 rounded-2xl px-8 py-5 flex items-center gap-10">
             {[
               { value: '20+', label: 'Creators Served' },
@@ -280,14 +273,14 @@ export default function Home() {
             ].map((stat, i) => (
               <div key={i} className="flex items-center gap-10">
                 {i > 0 && <div className="h-8 w-px bg-zinc-700" />}
-                <div className="text-center" data-testid={`stat-${stat.label.toLowerCase().replace(/\s/g,'-')}`}>
+                <div className="text-center">
                   <p className="text-white text-2xl font-bold leading-none">{stat.value}</p>
                   <p className="text-zinc-500 text-xs mt-1">{stat.label}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-zinc-600 z-10">
@@ -298,18 +291,17 @@ export default function Home() {
 
       {/* ── TRUSTED BY ── */}
       <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
+        <Reveal className="text-center mb-12">
           <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Trusted By</p>
           <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">Creators I've Worked With</h2>
-          {/* Decorative curved rule */}
           <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
             <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
           </svg>
           <p className="text-zinc-400 max-w-xl mx-auto mt-2">Real channels. Real thumbnails. Real results across gaming, entertainment and more.</p>
-        </div>
+        </Reveal>
 
         {/* Filter tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <Reveal className="flex flex-wrap justify-center gap-2 mb-10">
           {FILTERS.map(f => (
             <button
               key={f}
@@ -319,16 +311,17 @@ export default function Home() {
                   ? 'bg-white text-black border-white font-medium'
                   : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
               }`}
-              data-testid={`filter-${f.toLowerCase()}`}
             >
               {f}
             </button>
           ))}
-        </div>
+        </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filtered.map(c => (
-            <CreatorCard key={c.handle} {...c} />
+          {filtered.map((c, i) => (
+            <Reveal key={c.handle} delay={Math.min(i * 60, 300)}>
+              <CreatorCard {...c} />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -336,7 +329,7 @@ export default function Home() {
       {/* ── PROCESS ── */}
       <section className="py-24 px-4 sm:px-6 bg-zinc-950/50 border-y border-zinc-800/40">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
+          <Reveal className="text-center mb-16">
             <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">The Process</p>
             <h2 className="text-white text-3xl sm:text-4xl font-bold mb-2">
               Simple.&nbsp;<span className="text-zinc-500">Direct.</span>&nbsp;No Wasted Steps.
@@ -344,7 +337,7 @@ export default function Home() {
             <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
               <path d="M 8 6 C 30 1 55 7 80 3 C 93 1 102 6 102 5" stroke="url(#wfx-grad-fade)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
             </svg>
-          </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
@@ -352,12 +345,14 @@ export default function Home() {
               { n: '02', title: 'I Research Then Build', desc: 'I study your niche and competitors before a single element gets placed. Context first, design second.' },
               { n: '03', title: 'We Refine It Together', desc: 'You see the first draft and give your honest reaction. Direct feedback, fast turnaround, no ticket systems.' },
               { n: '04', title: 'Files Are Yours Forever', desc: 'High-res source file, web exports, every size you need. You own it outright with no licensing surprises.' },
-            ].map(step => (
-              <div key={step.n} className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 wfx-card-hover" data-testid={`step-${step.n}`}>
-                <span className="text-zinc-600 text-sm font-mono mb-3 block">{step.n}</span>
-                <h3 className="text-white font-semibold text-lg mb-2">{step.title}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed">{step.desc}</p>
-              </div>
+            ].map((step, i) => (
+              <Reveal key={step.n} delay={i * 80}>
+                <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 h-full wfx-card-hover">
+                  <span className="text-zinc-600 text-sm font-mono mb-3 block">{step.n}</span>
+                  <h3 className="text-white font-semibold text-lg mb-2">{step.title}</h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">{step.desc}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -365,43 +360,43 @@ export default function Home() {
 
       {/* ── FINAL CTA ── */}
       <section className="py-28 px-4 sm:px-6 text-center max-w-3xl mx-auto">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Let's Build Something</p>
-        <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
-          Every View Starts<br />With a{' '}
-          <button
-            type="button"
-            className={`click-word ${clickBurst ? 'is-clicked' : ''}`}
-            onClick={triggerClickBurst}
-            aria-label="Click to create an effect"
-          >
-            Click
-            {/* SVG curved underline — slightly wavy brushstroke */}
-            <svg className="click-word-underline" aria-hidden="true" viewBox="0 0 100 7" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 1 5 C 22 1 50 6 78 3 C 88 1 94 5 99 4" stroke="url(#wfx-grad-nav)" strokeWidth="2.2" strokeLinecap="round" fill="none" className="click-word-path" />
-            </svg>
-            <MousePointer2 className="click-cursor" aria-hidden="true" />
-            <span className="click-burst" key={clickBurst} aria-hidden="true">
-              <Sparkles className="click-spark click-spark-one" />
-              <Sparkles className="click-spark click-spark-two" />
-              <span className="click-dot click-dot-one" />
-              <span className="click-dot click-dot-two" />
-            </span>
-          </button>
-        </h2>
-        <p className="text-zinc-400 mb-10 max-w-md mx-auto">
-          Your next video deserves a thumbnail that gets clicked. Let's build it together.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors" data-testid="button-cta-start">
-            <Send className="w-4 h-4" /> Start a Project
-          </Link>
-          <Link href="/services" className="border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium" data-testid="button-cta-pricing">
-            See Pricing
-          </Link>
-        </div>
+        <Reveal>
+          <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Let's Build Something</p>
+          <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
+            Every View Starts<br />With a{' '}
+            <button
+              type="button"
+              className={`click-word ${clickBurst ? 'is-clicked' : ''}`}
+              onClick={triggerClickBurst}
+              aria-label="Click to create an effect"
+            >
+              Click
+              <svg className="click-word-underline" aria-hidden="true" viewBox="0 0 100 7" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 1 5 C 22 1 50 6 78 3 C 88 1 94 5 99 4" stroke="url(#wfx-grad-nav)" strokeWidth="2.2" strokeLinecap="round" fill="none" className="click-word-path" />
+              </svg>
+              <MousePointer2 className="click-cursor" aria-hidden="true" />
+              <span className="click-burst" key={clickBurst} aria-hidden="true">
+                <Sparkles className="click-spark click-spark-one" />
+                <Sparkles className="click-spark click-spark-two" />
+                <span className="click-dot click-dot-one" />
+                <span className="click-dot click-dot-two" />
+              </span>
+            </button>
+          </h2>
+          <p className="text-zinc-400 mb-10 max-w-md mx-auto">
+            Your next video deserves a thumbnail that gets clicked. Let's build it together.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors">
+              <Send className="w-4 h-4" /> Start a Project
+            </Link>
+            <Link href="/services" className="border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium">
+              See Pricing
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
-      {/* Reel carousel modal */}
       {reelOpen && <ReelCarousel onClose={() => setReelOpen(false)} />}
     </main>
   );

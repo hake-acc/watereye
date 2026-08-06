@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
+import Reveal from '@/components/reveal';
 
 const YOUTUBE_IDS = [
   'mp-Ir9zS2T0', 'UwkJ0mQmdBE', 'EpXfmPUgQNo', 'sz0Cfvjg5E0',
@@ -84,7 +85,7 @@ export default function Portfolio() {
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+      <Reveal className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
         <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Selected Works</p>
         <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">The Work</h1>
         <svg className="wfx-rule" aria-hidden="true" viewBox="0 0 110 9" xmlns="http://www.w3.org/2000/svg">
@@ -94,10 +95,10 @@ export default function Portfolio() {
           26 thumbnails shown here. Real channels, real audiences, real results.<br />
           Built with Adobe Photoshop, Cinema 4D and Blender.
         </p>
-      </div>
+      </Reveal>
 
       {/* Filters */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 mb-10 flex flex-wrap gap-2">
+      <Reveal className="max-w-5xl mx-auto px-4 sm:px-6 mb-10 flex flex-wrap gap-2">
         {FILTERS.map(f => (
           <button
             key={f}
@@ -107,54 +108,50 @@ export default function Portfolio() {
                 ? 'bg-white text-black border-white font-medium'
                 : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
             }`}
-            data-testid={`filter-portfolio-${f.toLowerCase().replace(/\s+/g, '-')}`}
           >
             {f}
           </button>
         ))}
         <span className="ml-auto text-zinc-600 text-sm self-center">{shown.length} works</span>
-      </div>
+      </Reveal>
 
       {/* Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {shown.map((item, i) => (
-          <div
-            key={item.id}
-            className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-colors group"
-            data-testid={`card-portfolio-${i}`}
-          >
-            <div className="aspect-video bg-zinc-800 overflow-hidden">
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-                onError={e => {
-                  const el = e.currentTarget as HTMLImageElement;
-                  el.parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-zinc-800 text-zinc-600 text-sm">Thumbnail</div>`;
-                }}
-              />
-            </div>
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className={`text-xs px-2.5 py-0.5 rounded-full border ${item.label === 'Youtube' ? 'text-red-400 border-red-900/60 bg-red-950/30' : 'text-blue-400 border-blue-900/60 bg-blue-950/30'}`}>
-                  {item.label}
-                </span>
+          <Reveal key={item.id} delay={Math.min(i * 40, 280)}>
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-colors group">
+              <div className="aspect-video bg-zinc-800 overflow-hidden">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  onError={e => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    el.parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-zinc-800 text-zinc-600 text-sm">Thumbnail</div>`;
+                  }}
+                />
               </div>
-              <h3 className="text-white font-semibold text-sm mb-1">{item.title}</h3>
-              <p className="text-zinc-500 text-xs leading-relaxed mb-3 line-clamp-2">{item.desc}</p>
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-zinc-400 hover:text-white text-xs transition-colors"
-                data-testid={`link-portfolio-${i}`}
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                {item.linkLabel}
-              </a>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full border ${item.label === 'Youtube' ? 'text-red-400 border-red-900/60 bg-red-950/30' : 'text-blue-400 border-blue-900/60 bg-blue-950/30'}`}>
+                    {item.label}
+                  </span>
+                </div>
+                <h3 className="text-white font-semibold text-sm mb-1">{item.title}</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed mb-3 line-clamp-2">{item.desc}</p>
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-zinc-400 hover:text-white text-xs transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  {item.linkLabel}
+                </a>
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </main>

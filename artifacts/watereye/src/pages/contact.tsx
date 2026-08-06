@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Mail, MessageSquare, ExternalLink, Clock, CheckCircle } from 'lucide-react';
 import FaqAccordion from '@/components/faq-accordion';
+import Reveal from '@/components/reveal';
 
 const FAQ_ITEMS = [
   { question: 'How long does a thumbnail actually take?', answer: 'Most single thumbnails ship within 24 to 48 hours from receiving your brief. Bulk packs and channel branding take 3 to 5 business days. If you need something same-day, just ask. Rush delivery is usually available for a small extra fee.' },
@@ -18,6 +19,12 @@ const SERVICES = [
 ];
 
 const BUDGETS = ['Under $50', '$50 to $100', '$100 to $250', '$250 to $500', '$500+', "Let's discuss"];
+
+const CONTACT_METHODS = [
+  { icon: <Mail className="w-4 h-4" />, label: 'Email', value: 'hello@watereye.fx', sub: 'Best for full briefs and file sharing', href: 'mailto:hello@watereye.fx' },
+  { icon: <MessageSquare className="w-4 h-4" />, label: 'Discord', value: 'watereyetheog', sub: 'Fastest for quick back-and-forth', href: 'https://discord.gg/zAgHgAGSaQ' },
+  { icon: <ExternalLink className="w-4 h-4" />, label: 'YT Jobs', value: 'WaterEyeFX Profile', sub: 'Hire me directly on YT Jobs', href: 'https://ytjobs.co/talent/profile/597018' },
+];
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -40,7 +47,7 @@ export default function Contact() {
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+      <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
         <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">Let's Talk</p>
         <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
           Tell Me About<br />Your Channel
@@ -52,17 +59,17 @@ export default function Contact() {
           No discovery calls just to get a quote. Fill out the brief below, be specific,
           and I'll get back to you within 24 hours with a plan and a price.
         </p>
-      </div>
+      </Reveal>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form */}
-        <div className="lg:col-span-2">
+        <Reveal className="lg:col-span-2">
           <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 sm:p-8">
             <h2 className="text-white font-semibold text-lg mb-6">Send Your Brief</h2>
             <p className="text-zinc-400 text-sm mb-8">The more detail you share here, the better the first draft will be. I read every word.</p>
 
             {submitted ? (
-              <div className="flex flex-col items-center gap-4 py-12 text-center" data-testid="form-success">
+              <div className="flex flex-col items-center gap-4 py-12 text-center">
                 <CheckCircle className="w-12 h-12 text-green-500" />
                 <p className="text-white font-semibold text-lg">Brief received.</p>
                 <p className="text-zinc-400 text-sm">I'll be in touch within 24 hours.</p>
@@ -76,7 +83,6 @@ export default function Contact() {
                       name="name" required value={form.name} onChange={handleChange}
                       className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
                       placeholder="Your name"
-                      data-testid="input-name"
                     />
                   </div>
                   <div>
@@ -85,7 +91,6 @@ export default function Contact() {
                       name="email" type="email" required value={form.email} onChange={handleChange}
                       className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
                       placeholder="you@example.com"
-                      data-testid="input-email"
                     />
                   </div>
                 </div>
@@ -96,7 +101,6 @@ export default function Contact() {
                     name="channel" value={form.channel} onChange={handleChange}
                     className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
                     placeholder="https://youtube.com/@yourchannel"
-                    data-testid="input-channel"
                   />
                 </div>
 
@@ -106,7 +110,6 @@ export default function Contact() {
                     <select
                       name="service" required value={form.service} onChange={handleChange}
                       className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-zinc-500 transition-colors"
-                      data-testid="select-service"
                     >
                       <option value="">Select a service...</option>
                       {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -117,7 +120,6 @@ export default function Contact() {
                     <select
                       name="budget" value={form.budget} onChange={handleChange}
                       className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-zinc-500 transition-colors"
-                      data-testid="select-budget"
                     >
                       <option value="">Select a budget range...</option>
                       {BUDGETS.map(b => <option key={b} value={b}>{b}</option>)}
@@ -131,7 +133,6 @@ export default function Contact() {
                     name="deadline" value={form.deadline} onChange={handleChange}
                     className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
                     placeholder="ASAP / specific date / flexible"
-                    data-testid="input-deadline"
                   />
                 </div>
 
@@ -142,7 +143,6 @@ export default function Contact() {
                     rows={5}
                     className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors resize-none"
                     placeholder="Tell me about your video topic, your channel, any references you like, and what feeling you want the thumbnail to convey..."
-                    data-testid="textarea-brief"
                   />
                 </div>
 
@@ -152,7 +152,6 @@ export default function Contact() {
                     name="source" value={form.source} onChange={handleChange}
                     className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
                     placeholder="YouTube, Discord, referral..."
-                    data-testid="input-source"
                   />
                 </div>
 
@@ -160,7 +159,6 @@ export default function Contact() {
                   <input
                     type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
                     className="mt-0.5 accent-white"
-                    data-testid="checkbox-agree"
                   />
                   <span className="text-zinc-400 text-sm">
                     I agree to the{' '}
@@ -175,75 +173,73 @@ export default function Contact() {
                   type="submit"
                   disabled={!agreed}
                   className="w-full bg-white text-black font-semibold rounded-xl py-3 hover:bg-zinc-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  data-testid="button-submit"
                 >
                   Send My Brief
                 </button>
               </form>
             )}
           </div>
-        </div>
+        </Reveal>
 
         {/* Sidebar */}
         <div className="space-y-4">
-          {/* Contact methods */}
-          {[
-            { icon: <Mail className="w-4 h-4" />, label: 'Email', value: 'hello@watereye.fx', sub: 'Best for full briefs and file sharing', href: 'mailto:hello@watereye.fx' },
-            { icon: <MessageSquare className="w-4 h-4" />, label: 'Discord', value: 'watereyetheog', sub: 'Fastest for quick back-and-forth', href: 'https://discord.gg/zAgHgAGSaQ' },
-            { icon: <ExternalLink className="w-4 h-4" />, label: 'YT Jobs', value: 'WaterEyeFX Profile', sub: 'Hire me directly on YT Jobs', href: 'https://ytjobs.co/talent/profile/597018' },
-          ].map(item => (
-            <a
-              key={item.label}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-start gap-3 bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4 hover:border-zinc-700 transition-colors group"
-              data-testid={`contact-method-${item.label.toLowerCase()}`}
-            >
-              <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400 shrink-0">
-                {item.icon}
-              </div>
-              <div>
-                <p className="text-zinc-500 text-xs mb-0.5">{item.label}</p>
-                <p className="text-white text-sm font-medium group-hover:underline">{item.value}</p>
-                <p className="text-zinc-500 text-xs mt-0.5">{item.sub}</p>
-              </div>
-            </a>
+          {CONTACT_METHODS.map((item, i) => (
+            <Reveal key={item.label} delay={i * 80}>
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4 hover:border-zinc-700 transition-colors group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400 shrink-0">
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="text-zinc-500 text-xs mb-0.5">{item.label}</p>
+                  <p className="text-white text-sm font-medium group-hover:underline">{item.value}</p>
+                  <p className="text-zinc-500 text-xs mt-0.5">{item.sub}</p>
+                </div>
+              </a>
+            </Reveal>
           ))}
 
-          {/* Response time */}
-          <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4" data-testid="response-time">
-            <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-zinc-500" />
-              <span className="text-zinc-400 text-xs">Response</span>
+          <Reveal delay={240}>
+            <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4 text-zinc-500" />
+                <span className="text-zinc-400 text-xs">Response</span>
+              </div>
+              <p className="text-white font-medium text-sm">Within 24 hours</p>
+              <p className="text-zinc-500 text-xs mt-0.5">Monday through Sunday, most holidays included</p>
             </div>
-            <p className="text-white font-medium text-sm">Within 24 hours</p>
-            <p className="text-zinc-500 text-xs mt-0.5">Monday through Sunday, most holidays included</p>
-          </div>
+          </Reveal>
 
-          {/* Availability */}
-          <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4" data-testid="availability">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-green-400 text-xs font-medium">Available</span>
+          <Reveal delay={300}>
+            <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-green-400 text-xs font-medium">Available</span>
+              </div>
+              <p className="text-white font-medium text-sm">Open for New Projects</p>
+              <p className="text-zinc-500 text-xs mt-1 leading-relaxed">
+                Taking on new clients across all service types right now.<br />
+                Typical project start: within 2 business days of your brief being confirmed.
+              </p>
             </div>
-            <p className="text-white font-medium text-sm">Open for New Projects</p>
-            <p className="text-zinc-500 text-xs mt-1 leading-relaxed">
-              Taking on new clients across all service types right now.<br />
-              Typical project start: within 2 business days of your brief being confirmed.
-            </p>
-          </div>
+          </Reveal>
         </div>
       </div>
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-24">
-        <div className="text-center mb-10">
+        <Reveal className="text-center mb-10">
           <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
           <h2 className="text-white text-3xl font-bold">Frequently Asked Questions</h2>
           <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
-        </div>
-        <FaqAccordion items={FAQ_ITEMS} />
+        </Reveal>
+        <Reveal delay={100}>
+          <FaqAccordion items={FAQ_ITEMS} />
+        </Reveal>
       </section>
     </main>
   );

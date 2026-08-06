@@ -455,6 +455,28 @@
   100% { opacity: 0; transform: translate(1.3em, .7em) scale(1); }
 }
 
+/* ── Entrance animation (Apple-style slide-up) ── */
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.reveal.is-visible {
+  animation: reveal-up 0.72s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-stop-underline,
   .plane-cta.is-flying .plane-icon,
@@ -462,6 +484,12 @@
   .click-word.is-clicked,
   .click-word.is-clicked .click-cursor,
   .click-burst > * {
+    animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
     animation: none !important;
   }
 }

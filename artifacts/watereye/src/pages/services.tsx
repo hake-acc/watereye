@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { Check, Send, Eye } from 'lucide-react';
 import FaqAccordion from '@/components/faq-accordion';
+import Reveal from '@/components/reveal';
 
 const SERVICES = [
   { n: '01', title: 'YouTube Thumbnail Design', desc: 'The core service. I study your channel, your niche, and the competition before a single element gets placed. The result is a thumbnail that earns its click because it was designed specifically for your feed.' },
@@ -60,7 +61,7 @@ export default function Services() {
   return (
     <main className="pt-20 pb-24">
       {/* Header */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
+      <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-10 text-center">
         <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3 wfx-section-label">What I Do</p>
         <h1 className="text-white text-4xl sm:text-5xl font-bold mb-2">
           Services&nbsp;<span className="text-zinc-400 font-normal">&amp;</span>&nbsp;Pricing
@@ -72,11 +73,11 @@ export default function Services() {
           No vague packages, no hidden scopes. Every service listed here is something I've done many times over,
           and the price reflects exactly what you get.
         </p>
-      </div>
+      </Reveal>
 
       {/* Services list */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
-        <div className="text-center mb-10">
+        <Reveal className="text-center mb-10">
           <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">What's Available</p>
           <h2 className="text-white text-2xl sm:text-3xl font-bold">
             Every Service I Offer
@@ -84,18 +85,20 @@ export default function Services() {
           <p className="text-zinc-400 mt-3 max-w-lg mx-auto text-sm">
             From a single thumbnail to a full channel identity. Built around your niche, your audience, and your upload schedule.
           </p>
-        </div>
+        </Reveal>
         <div className="space-y-3">
-          {SERVICES.map(s => (
-            <div key={s.n} className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-zinc-700 transition-colors" data-testid={`service-${s.n}`}>
-              <div className="flex items-start gap-4">
-                <span className="text-zinc-600 text-sm font-mono shrink-0 mt-0.5">{s.n}</span>
-                <div>
-                  <h3 className="text-white font-semibold mb-1">{s.title}</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed">{s.desc}</p>
+          {SERVICES.map((s, i) => (
+            <Reveal key={s.n} delay={i * 50}>
+              <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-zinc-700 transition-colors">
+                <div className="flex items-start gap-4">
+                  <span className="text-zinc-600 text-sm font-mono shrink-0 mt-0.5">{s.n}</span>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">{s.title}</h3>
+                    <p className="text-zinc-400 text-sm leading-relaxed">{s.desc}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -103,7 +106,7 @@ export default function Services() {
       {/* Pricing */}
       <section className="bg-zinc-950/50 border-y border-zinc-800/40 py-24 px-4 sm:px-6 mb-24">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <Reveal className="text-center mb-12">
             <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Pricing Plans</p>
             <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
               Pick a Plan.&nbsp;<span className="text-zinc-400">Or Build Your Own.</span>
@@ -112,93 +115,98 @@ export default function Services() {
               These three tiers cover most of what creators need. For agencies, bulk orders, or custom scopes,
               reach out and I'll put together a quote that actually fits.
             </p>
-          </div>
+          </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {PLANS.map(plan => (
-              <div
-                key={plan.name}
-                className={`rounded-2xl p-6 flex flex-col relative border transition-colors ${
-                  plan.popular
-                    ? 'border-white/40 bg-zinc-900 shadow-[0_0_30px_rgba(255,255,255,0.06)]'
-                    : 'border-zinc-800 bg-zinc-900/60'
-                }`}
-                data-testid={`plan-${plan.name.toLowerCase()}`}
-              >
-                {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black text-xs font-bold px-4 py-1 rounded-full">
-                    Most Popular
-                  </span>
-                )}
-                <div className="mb-5">
-                  <p className="text-zinc-400 text-sm mb-2">{plan.name}</p>
-                  <div className="flex items-end gap-1">
-                    <span className="text-white text-4xl font-bold">{plan.price}</span>
-                  </div>
-                  <p className="text-zinc-500 text-xs mt-1">{plan.unit}</p>
-                </div>
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {plan.features.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-zinc-300">
-                      <Check className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/contact"
-                  className={`text-center rounded-full py-2.5 text-sm font-medium transition-colors ${
+            {PLANS.map((plan, i) => (
+              <Reveal key={plan.name} delay={i * 80}>
+                <div
+                  className={`rounded-2xl p-6 flex flex-col relative border transition-colors h-full ${
                     plan.popular
-                      ? 'bg-white text-black hover:bg-zinc-100'
-                      : 'border border-zinc-700 text-white hover:border-zinc-500'
+                      ? 'border-white/40 bg-zinc-900 shadow-[0_0_30px_rgba(255,255,255,0.06)]'
+                      : 'border-zinc-800 bg-zinc-900/60'
                   }`}
-                  data-testid={`button-plan-${plan.name.toLowerCase()}`}
                 >
-                  {plan.cta}
-                </Link>
-              </div>
+                  {plan.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black text-xs font-bold px-4 py-1 rounded-full">
+                      Most Popular
+                    </span>
+                  )}
+                  <div className="mb-5">
+                    <p className="text-zinc-400 text-sm mb-2">{plan.name}</p>
+                    <div className="flex items-end gap-1">
+                      <span className="text-white text-4xl font-bold">{plan.price}</span>
+                    </div>
+                    <p className="text-zinc-500 text-xs mt-1">{plan.unit}</p>
+                  </div>
+                  <ul className="space-y-2.5 mb-8 flex-1">
+                    {plan.features.map(f => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-zinc-300">
+                        <Check className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/contact"
+                    className={`text-center rounded-full py-2.5 text-sm font-medium transition-colors ${
+                      plan.popular
+                        ? 'bg-white text-black hover:bg-zinc-100'
+                        : 'border border-zinc-700 text-white hover:border-zinc-500'
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
+              </Reveal>
             ))}
           </div>
-          <p className="text-center text-zinc-500 text-sm mt-8">
-            Need a custom scope?{' '}
-            <Link href="/contact" className="text-white underline underline-offset-2 hover:text-zinc-300 transition-colors">
-              Send me a message
-            </Link>{' '}
-            and I'll respond with a tailored quote within 24 hours.
-          </p>
+          <Reveal className="text-center mt-8">
+            <p className="text-zinc-500 text-sm">
+              Need a custom scope?{' '}
+              <Link href="/contact" className="text-white underline underline-offset-2 hover:text-zinc-300 transition-colors">
+                Send me a message
+              </Link>{' '}
+              and I'll respond with a tailored quote within 24 hours.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Commitment */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
-        <div className="text-center mb-12">
+        <Reveal className="text-center mb-12">
           <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">My Commitment</p>
           <h2 className="text-white text-3xl sm:text-4xl font-bold">
             What Every Client Gets.&nbsp;<span className="text-zinc-400">No Exceptions.</span>
           </h2>
-        </div>
+        </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {COMMITMENTS.map(c => (
-            <div key={c.n} className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-zinc-700 transition-colors" data-testid={`commitment-${c.n}`}>
-              <span className="text-zinc-600 text-sm font-mono block mb-3">{c.n}</span>
-              <h3 className="text-white font-semibold mb-2">{c.title}</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">{c.desc}</p>
-            </div>
+          {COMMITMENTS.map((c, i) => (
+            <Reveal key={c.n} delay={i * 70}>
+              <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 h-full hover:border-zinc-700 transition-colors">
+                <span className="text-zinc-600 text-sm font-mono block mb-3">{c.n}</span>
+                <h3 className="text-white font-semibold mb-2">{c.title}</h3>
+                <p className="text-zinc-400 text-sm leading-relaxed">{c.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 mb-24">
-        <div className="text-center mb-10">
+        <Reveal className="text-center mb-10">
           <p className="text-zinc-500 text-sm uppercase tracking-widest mb-3">Before You Ask</p>
           <h2 className="text-white text-3xl font-bold">Frequently Asked Questions</h2>
           <p className="text-zinc-400 mt-3 text-sm">The questions I get every week. Answered honestly, no marketing spin.</p>
-        </div>
-        <FaqAccordion items={FAQ_ITEMS} />
+        </Reveal>
+        <Reveal delay={100}>
+          <FaqAccordion items={FAQ_ITEMS} />
+        </Reveal>
       </section>
 
       {/* CTA */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <Reveal className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <p className="text-zinc-500 text-sm uppercase tracking-widest mb-4">Ready When You Are</p>
         <h2 className="text-white text-3xl sm:text-4xl font-bold mb-4">
           Your Next Thumbnail<br />Doesn't Have to Guess.
@@ -208,14 +216,14 @@ export default function Services() {
           First response guaranteed within 24 hours.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors" data-testid="button-services-cta">
+          <Link href="/contact" className="flex items-center gap-2 bg-white text-black font-medium rounded-full px-7 py-3 hover:bg-zinc-100 transition-colors">
             <Send className="w-4 h-4" /> Start a Project
           </Link>
-          <Link href="/portfolio" className="flex items-center gap-2 border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium" data-testid="button-services-portfolio">
+          <Link href="/portfolio" className="flex items-center gap-2 border border-zinc-700 text-white rounded-full px-7 py-3 hover:border-zinc-500 transition-colors text-sm font-medium">
             <Eye className="w-4 h-4" /> See the Work
           </Link>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }

@@ -9,20 +9,27 @@ const YOUTUBE_IDS = [
 ];
 
 const SAMPLE_IMAGES = [
-  'https://watereye.is-great.org/assets/thumbnails/Samples/Watereye-1.webp',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/05fa45233122041.69c780c5aab84.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/1945ad233122041.6a4b6ab3c6f5c.jpg',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/Watereye-2.webp',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/95f711233122041.6a4b6ab3c738d.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/24a4df233122041.6a4b672b40ac7.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/19b45d233122041.6a4b672baf324.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/dfd2ec233122041.6a4b672baf967.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/6f787a233122041.6a4b672b41247.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/Watereye-3.webp',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/5262e3233122041.69d7fc783ddad.png',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/9bc4d2233122041.68fda9e967b6d.jpg',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/dacd91233122041.6a4b6ab3c77ec.jpg',
-  'https://watereye.is-great.org/assets/thumbnails/Samples/Watereye-4.png',
+  '/Samples/05fa45233122041.69c780c5aab84.png',
+  '/Samples/1945ad233122041.6a4b6ab3c6f5c.jpg',
+  '/Samples/19b45d233122041.6a4b672baf324.png',
+  '/Samples/1a60ae233122041.69c780c5ab473.png',
+  '/Samples/24a4df233122041.6a4b672b40ac7.png',
+  '/Samples/2b856e233122041.69d7fc783d085.png',
+  '/Samples/5262e3233122041.69d7fc783ddad.png',
+  '/Samples/6f787a233122041.6a4b672b41247.png',
+  '/Samples/95f711233122041.6a4b6ab3c738d.png',
+  '/Samples/9bc4d2233122041.68fda9e967b6d.jpg',
+  '/Samples/d22e61233122041.6a4b672c22527.jpg',
+  '/Samples/dacd91233122041.6a4b6ab3c77ec.jpg',
+  '/Samples/dfd2ec233122041.6a4b672baf967.png',
+  '/Samples/e8034a233122041.6a4b672c220c3.jpg',
+  '/Samples/f4043e233122041.693da2adbafb9.jpg',
+  '/Samples/Kitkat%20(1).png',
+  '/Samples/Watereye-1.webp',
+  '/Samples/Watereye%20(2).png',
+  '/Samples/Watereye-2.webp',
+  '/Samples/Watereye-3.webp',
+  '/Samples/Watereye-Samples.webp',
 ];
 
 const YOUTUBE_DESCS = [
@@ -54,7 +61,7 @@ export default function Portfolio() {
   const youtubeItems = YOUTUBE_IDS.map((id, i) => ({
     type: 'youtube' as const,
     id,
-    img: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+    img: SAMPLE_IMAGES[i % SAMPLE_IMAGES.length],
     label: 'Youtube',
     title: 'Creator Thumbnail Live on YouTube',
     desc: YOUTUBE_DESCS[i % YOUTUBE_DESCS.length],
@@ -134,10 +141,6 @@ export default function Portfolio() {
                   alt={item.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
-                  onError={e => {
-                    const el = e.currentTarget as HTMLImageElement;
-                    el.parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-zinc-800 text-zinc-600 text-sm">Thumbnail</div>`;
-                  }}
                 />
               </div>
               <div className="p-4">

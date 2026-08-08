@@ -1,0 +1,714 @@
+TASK: RECREATE THE CREATOR CARD BACKGROUND FROM THE ATTACHED REFERENCE IMAGE WITH HIGH VISUAL FIDELITY
+
+You are working inside an existing React project.
+
+I have attached a reference screenshot showing the exact visual treatment I want for the BACKGROUND OF THE CREATOR CARDS.
+
+IMPORTANT:
+I am NOT asking you to copy the button design.
+I am NOT asking you to redesign the creator cards.
+I am NOT asking you to change the creator data, typography, layout structure, or CTA.
+
+The specific objective is:
+
+RECREATE THE BACKGROUND / CONTAINER VISUAL SYSTEM BEHIND EACH CREATOR FROM THE REFERENCE IMAGE, then adapt that visual system to our existing website's colour scheme and existing creators.
+
+Do not interpret this as “make a purple card.”
+The reference has a very specific layered construction.
+
+==================================================
+1. FIRST INSPECT THE EXISTING PROJECT
+==================================================
+
+Before modifying anything:
+
+1. Find the existing creator section/component.
+2. Identify:
+   - creator card component
+   - creator data source
+   - avatar/image rendering
+   - current card wrapper
+   - current responsive behavior
+   - existing Tailwind/CSS styling
+   - existing design tokens / CSS variables
+   - existing colour palette
+3. Reuse the existing creator data.
+4. Reuse the existing creator images.
+5. Reuse the existing card content.
+6. Do NOT replace the creators with the people shown in the reference screenshot.
+7. Do NOT hardcode example creators from the screenshot.
+8. Do NOT create duplicate components if an existing reusable creator-card component already exists.
+
+Make the visual treatment reusable so every creator automatically receives the same background system.
+
+==================================================
+2. REFERENCE IMAGE — WHAT MUST BE RECREATED
+==================================================
+
+Study the attached reference image carefully.
+
+Each creator card is a large rounded rectangular panel sitting on a nearly black page background.
+
+The card is visually divided horizontally into TWO major atmospheric regions.
+
+TOP REGION:
+A relatively brighter, tinted surface.
+
+LOWER REGION:
+A much darker surface that blends into the site's dark environment.
+
+The transition between these regions occurs approximately around the vertical position where the creator avatar intersects the card.
+
+The avatar is intentionally positioned OVER this transition.
+
+This is extremely important.
+
+The avatar should NOT simply sit inside a normal centered card.
+
+The composition should visually read as:
+
+        ┌─────────────────────────────┐
+        │                             │
+        │       DARK/TINTED           │
+        │       UPPER SURFACE         │
+        │                             │
+        │             ◯               │
+        │          AVATAR             │
+        ├─────────────────────────────┤ ← transition
+        │                             │
+        │       VERY DARK LOWER       │
+        │       SURFACE               │
+        │                             │
+        │       CREATOR NAME          │
+        │                             │
+        │      SUBSCRIBER PILL        │
+        │                             │
+        │      EXISTING CTA           │
+        │                             │
+        └─────────────────────────────┘
+
+The avatar crosses the boundary between the upper and lower zones.
+
+==================================================
+3. CARD CONTAINER GEOMETRY
+==================================================
+
+Preserve the existing card dimensions as much as possible.
+
+Do NOT arbitrarily redesign the card proportions.
+
+The card should have:
+
+- large border radius
+- subtle 1px border
+- dark exterior shadow
+- clipped internal background layers
+- overflow: hidden
+
+The internal background must be clipped to the rounded card.
+
+Use:
+
+overflow: hidden;
+
+on the main visual card wrapper so the background gradients never escape through the rounded corners.
+
+The outer card should feel like a single physical surface rather than two separate divs.
+
+==================================================
+4. TWO-LAYER BACKGROUND SYSTEM
+==================================================
+
+Create the visual background using layered CSS rather than inserting a static image.
+
+Prefer CSS gradients / pseudo-elements.
+
+DO NOT use a screenshot as the background.
+
+The reference should be reconstructed procedurally.
+
+Recommended architecture:
+
+.card
+  ├── .card-background
+  │     ├── .upper-atmosphere
+  │     ├── .lower-atmosphere
+  │     ├── .transition-glow
+  │     └── optional ambient radial layers
+  │
+  └── existing creator content
+
+The exact implementation can differ if the result is visually equivalent.
+
+==================================================
+5. UPPER REGION
+==================================================
+
+The upper ~30–40% of the card should contain a subtle brand-tinted atmosphere.
+
+Do NOT make it a flat solid colour.
+
+Use a very subtle gradient.
+
+Conceptually:
+
+background:
+linear-gradient(
+  to bottom,
+  <brand-tint-dark>,
+  <brand-tint-deeper>
+);
+
+The upper area should be visibly lighter than the lower area but still remain dark.
+
+Avoid:
+- bright purple
+- neon purple
+- saturated gradients
+- glassmorphism
+- excessive blur
+- obvious gradient bands
+
+The colour must be derived from OUR EXISTING BRAND COLOUR SCHEME.
+
+Do not introduce a completely unrelated purple palette just because the reference uses purple.
+
+Translate the visual relationship of the reference into our palette.
+
+In other words:
+
+REFERENCE:
+dark purple upper atmosphere
++
+almost-black lower atmosphere
+
+OUR VERSION:
+brand-coloured upper atmosphere
++
+our existing dark background lower atmosphere.
+
+==================================================
+6. LOWER REGION
+==================================================
+
+The lower region must be significantly darker.
+
+It should visually approach the existing website background.
+
+The lower background should not simply be:
+
+background: #000;
+
+Instead, use a very subtle tonal gradient so it retains depth.
+
+Conceptually:
+
+linear-gradient(
+  to bottom,
+  <dark-brand-neutral>,
+  <existing-site-dark-background>
+);
+
+The goal is for the lower section to visually merge with the surrounding dark website without completely disappearing.
+
+==================================================
+7. HORIZONTAL TRANSITION
+==================================================
+
+THIS IS ONE OF THE MOST IMPORTANT DETAILS.
+
+The upper and lower regions meet through a clean horizontal boundary.
+
+The reference does NOT have a soft full-card gradient where everything gradually transitions.
+
+Instead, the visual structure is closer to:
+
+UPPER ATMOSPHERE
+████████████████████████████
+
+──────────── transition ────────────
+
+LOWER DARK SURFACE
+████████████████████████████
+
+Create this transition using either:
+
+- layered pseudo-elements
+- background gradients with carefully controlled stops
+- a dedicated transition layer
+
+The transition should be almost perfectly horizontal.
+
+Do NOT make it diagonal.
+
+Do NOT make it wavy.
+
+Do NOT make it circular.
+
+Do NOT make it look like a generic hero gradient.
+
+==================================================
+8. AVATAR OVERLAP
+==================================================
+
+The avatar is the visual anchor.
+
+It MUST overlap the upper/lower background boundary.
+
+The avatar should sit approximately 50% above and 50% below the transition area, depending on the existing card dimensions.
+
+Use positioning similar to:
+
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+
+and position it so its center is approximately aligned with the transition line.
+
+However, DO NOT blindly use fixed pixel values.
+
+Make the placement responsive relative to the card.
+
+The avatar should appear to physically emerge from the card background.
+
+It must have:
+
+- circular clipping
+- subtle dark border/ring
+- subtle shadow
+- enough contrast from both background regions
+- no accidental rectangular image edges
+
+The existing creator avatar must be used.
+
+==================================================
+9. AVATAR HALO / LOCAL CONTRAST
+==================================================
+
+There is subtle visual separation around the avatar.
+
+Recreate this with a restrained shadow/halo.
+
+Example conceptual structure:
+
+box-shadow:
+0 0 0 3px rgba(...),
+0 8px 24px rgba(0,0,0,.45);
+
+BUT:
+
+Do not blindly copy these values.
+
+Tune them against the existing colour scheme.
+
+The halo should make the avatar readable against the transition.
+
+It should NOT look like a neon ring.
+
+==================================================
+10. CARD BORDER
+==================================================
+
+The reference card has a very subtle border.
+
+Use a low-opacity border derived from the site's palette.
+
+Something conceptually similar to:
+
+border: 1px solid rgba(<brand>, 0.12);
+
+But calculate the actual value from the existing design system.
+
+The border should become slightly more visible around the upper region because of the contrast.
+
+Do NOT use a bright solid border.
+
+==================================================
+11. CARD SHADOW
+==================================================
+
+The card should separate from the page using a large, soft, dark shadow.
+
+Use a layered shadow if necessary.
+
+Conceptually:
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.30);
+
+Potentially combine with a very subtle brand-tinted ambient shadow.
+
+The effect must remain understated.
+
+No glowing purple neon card shadow.
+
+==================================================
+12. OPTIONAL AMBIENT RADIAL LIGHT
+==================================================
+
+If necessary, add extremely subtle radial gradients inside the card.
+
+For example:
+
+radial-gradient(
+  circle at 50% 0%,
+  <low-opacity-brand-colour>,
+  transparent 55%
+)
+
+and/or
+
+radial-gradient(
+  circle at 50% 100%,
+  <very-low-opacity-brand-colour>,
+  transparent 60%
+)
+
+These should provide depth.
+
+They should NOT be visually obvious as circles.
+
+If removing them produces a closer match, remove them.
+
+Visual accuracy is more important than adding effects.
+
+==================================================
+13. OUR COLOUR SCHEME
+==================================================
+
+Use the EXISTING project's colour tokens.
+
+Do not invent a new colour system.
+
+If the project already defines CSS variables / Tailwind tokens, use them.
+
+If the existing brand palette is available, derive:
+
+UPPER ATMOSPHERE
+→ darker/lower-opacity version of the primary brand colour
+
+TRANSITION
+→ slightly stronger brand tint
+
+LOWER ATMOSPHERE
+→ existing dark background / near-black surface
+
+BORDER
+→ low-opacity brand/white neutral
+
+SHADOW
+→ black with low opacity
+
+IMPORTANT:
+The visual hierarchy must remain:
+
+upper atmosphere
+>
+transition
+>
+lower atmosphere
+
+not:
+
+bright neon gradient
+>
+black.
+
+==================================================
+14. DO NOT MODIFY THESE THINGS
+==================================================
+
+Unless absolutely necessary for the background implementation:
+
+DO NOT change:
+
+- creator names
+- subscriber counts
+- creator images
+- creator links
+- existing CTA text
+- CTA functionality
+- button behavior
+- page routing
+- data fetching
+- API logic
+- component API
+- unrelated sections
+- global typography
+- navbar
+- footer
+- page layout
+- unrelated animations
+
+This task is specifically a VISUAL BACKGROUND RECONSTRUCTION.
+
+==================================================
+15. RESPONSIVE BEHAVIOUR
+==================================================
+
+The background must scale naturally on:
+
+- mobile
+- tablet
+- desktop
+- large desktop
+
+Do not use a desktop-only fixed pixel background.
+
+The transition position should remain proportional to the card.
+
+The avatar should remain centered.
+
+The background zones should maintain approximately the same visual proportions across breakpoints.
+
+Do NOT allow the transition to move so low/high that the avatar no longer intersects it.
+
+==================================================
+16. CSS IMPLEMENTATION PREFERENCE
+==================================================
+
+Prefer a clean CSS architecture such as:
+
+.creator-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.creator-card::before {
+  /* upper atmosphere */
+}
+
+.creator-card::after {
+  /* lower atmosphere / transition */
+}
+
+.avatar {
+  position: absolute;
+  z-index: ...
+}
+
+content {
+  position: relative;
+  z-index: ...
+}
+
+OR use dedicated background layers if that is cleaner.
+
+Use pseudo-elements where they simplify the DOM.
+
+Avoid adding unnecessary React elements purely for decorative effects.
+
+Do NOT install another library.
+
+Do NOT introduce Three.js.
+
+Do NOT use canvas.
+
+Do NOT use an image as the background.
+
+This should be lightweight CSS.
+
+==================================================
+17. Z-INDEX ARCHITECTURE
+==================================================
+
+Establish an intentional stacking order.
+
+Recommended conceptual hierarchy:
+
+z-index 0
+→ card background
+
+z-index 1
+→ ambient/transition effects
+
+z-index 2
+→ avatar
+
+z-index 3
+→ creator content
+
+z-index 4
+→ interactive elements
+
+The avatar must remain above the background transition.
+
+Text must remain above decorative layers.
+
+Decorative layers must never intercept pointer events.
+
+Use:
+
+pointer-events: none;
+
+for purely decorative elements.
+
+==================================================
+18. PERFORMANCE
+==================================================
+
+This is a repeated component.
+
+There may be many creator cards.
+
+Therefore:
+
+- avoid expensive filters
+- avoid huge blur radii where unnecessary
+- avoid animated gradients
+- avoid continuously running CSS animations
+- avoid JS-driven decorative rendering
+- avoid duplicated DOM structures
+
+Static CSS gradients are preferred.
+
+The background should cost almost nothing at runtime.
+
+==================================================
+19. VISUAL TARGET
+==================================================
+
+The final card should have the following visual perception:
+
+1. A dark rounded card.
+2. The upper portion feels like a dim brand-coloured atmospheric panel.
+3. Around the avatar's center is a strong horizontal compositional boundary.
+4. The avatar crosses that boundary.
+5. The lower half becomes dramatically darker.
+6. The creator information sits naturally inside that dark lower surface.
+7. The card feels dimensional without glassmorphism.
+8. The background looks designed, not like a generic gradient.
+9. The card should feel like the reference's visual language, but belong unmistakably to OUR website.
+
+Think:
+
+"layered atmospheric panel"
+
+NOT:
+
+"purple gradient card."
+
+==================================================
+20. REFERENCE ANALYSIS CHECK
+==================================================
+
+Before finishing, compare your implementation against the attached reference visually.
+
+Specifically inspect:
+
+A. Card corner radius
+B. Upper/lower background ratio
+C. Horizontal transition position
+D. Avatar overlap position
+E. Upper-region brightness
+F. Lower-region darkness
+G. Border subtlety
+H. Shadow softness
+I. Amount of ambient glow
+J. Overall contrast
+K. Spacing between avatar and creator name
+L. Whether the background feels like one physical card
+
+If any decorative effect makes it look more like a generic modern SaaS card instead of the reference, REMOVE that effect.
+
+==================================================
+21. IMPORTANT — DO NOT OVERDESIGN
+==================================================
+
+Do NOT add:
+
+- glassmorphism
+- glass panels
+- frosted blur
+- excessive neon
+- animated borders
+- glowing outlines
+- rainbow gradients
+- purple-only styling
+- random blobs
+- floating particles
+- noise textures
+- mesh gradients
+- excessive radial gradients
+- decorative lines unrelated to the reference
+
+The reference is visually simple.
+
+Its sophistication comes from:
+
+COLOR SEPARATION
++
+POSITIONING
++
+LAYERING
++
+CONTRAST
++
+SHADOW
++
+AVATAR OVERLAP
+
+Recreate those fundamentals precisely.
+
+==================================================
+22. IMPLEMENTATION REQUIREMENT
+==================================================
+
+Do not merely describe the solution.
+
+Actually modify the existing React implementation.
+
+After implementing:
+
+1. Verify the creator cards render correctly.
+2. Verify all existing creators still appear.
+3. Verify links still work.
+4. Verify responsive layouts.
+5. Verify there are no console errors.
+6. Verify there are no broken imports.
+7. Verify the background layers are clipped to the card.
+8. Verify the avatar remains above the transition.
+9. Verify no unrelated sections were changed.
+
+If the project uses Tailwind, use the existing Tailwind architecture where practical.
+
+If custom CSS is cleaner for the layered background, use a scoped CSS class rather than creating excessive utility classes.
+
+==================================================
+23. FINAL QUALITY BAR
+==================================================
+
+The implementation should NOT be considered complete simply because:
+
+"there is a purple top and black bottom."
+
+That is insufficient.
+
+The target is the COMPOSITIONAL TECHNIQUE visible in the attached screenshot:
+
+rounded dark card
++
+upper atmospheric colour field
++
+precise horizontal division
++
+avatar intersecting division
++
+dark lower field
++
+subtle border
++
+deep external shadow
++
+restrained local contrast around avatar.
+
+Use the attached screenshot as the visual reference throughout implementation.
+
+Use OUR existing creators and OUR existing colour system.
+
+Do not copy the reference's creator data.
+
+Do not redesign the rest of the card.
+
+Implement the background reconstruction directly in the existing React codebase.

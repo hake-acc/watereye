@@ -220,6 +220,55 @@
   box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.08), 0 6px 28px rgba(168, 85, 247, 0.07) !important;
 }
 
+/* Creator cards — a clipped, two-zone atmospheric surface. The transition
+   stays horizontal and the avatar is deliberately centered on it. */
+.creator-card {
+  --creator-card-transition: 42%;
+  background: hsl(var(--background));
+}
+
+.creator-card__background,
+.creator-card__upper-atmosphere,
+.creator-card__lower-atmosphere,
+.creator-card__transition-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.creator-card__background {
+  z-index: 0;
+  overflow: hidden;
+  background: hsl(var(--background));
+}
+
+.creator-card__avatar {
+  top: var(--creator-card-transition);
+}
+
+.creator-card__upper-atmosphere {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.13), transparent 68%),
+    linear-gradient(to bottom, rgba(76, 29, 149, 0.42), rgba(49, 27, 87, 0.3));
+  clip-path: inset(0 0 calc(100% - var(--creator-card-transition)) 0);
+}
+
+.creator-card__lower-atmosphere {
+  background:
+    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.035), transparent 62%),
+    linear-gradient(to bottom, rgba(24, 18, 31, 0.98), hsl(var(--background)));
+  clip-path: inset(var(--creator-card-transition) 0 0 0);
+}
+
+.creator-card__transition-glow {
+  top: calc(var(--creator-card-transition) - 1px);
+  bottom: auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(168, 85, 247, 0.08) 18%, rgba(196, 146, 255, 0.16) 50%, rgba(168, 85, 247, 0.08) 82%, transparent 100%);
+  opacity: 0.8;
+  z-index: 1;
+}
+
 /* Landing page interaction details */
 .hero-stop {
   position: relative;

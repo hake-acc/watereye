@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { ElementType, Ref } from 'react';
 
 interface TextRevealProps {
   children: string;
@@ -7,7 +8,7 @@ interface TextRevealProps {
   delay?: number;
   /** Stagger between each word (ms) */
   wordDelay?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }
 
 /**
@@ -44,7 +45,7 @@ export default function TextReveal({
 
   return (
     <Tag
-      ref={ref as React.Ref<HTMLElement>}
+      ref={ref as Ref<HTMLElement>}
       className={className}
       aria-label={children}
     >
